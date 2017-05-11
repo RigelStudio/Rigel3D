@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 	auto* osgView = new OSGGraphView;
 	setCentralWidget(osgView);
-	//setCentralWidget(Core::ins()->getOSGView());
+	Core::ins()->init(osgView);
 	initScene();
 }
 

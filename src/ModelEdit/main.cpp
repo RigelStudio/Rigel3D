@@ -6,9 +6,7 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-
 	FileUtils::ins()->init(QApplication::applicationDirPath().append("/../"));
-	Core::ins()->init();
 
 	MainWindow w;
 	w.show();

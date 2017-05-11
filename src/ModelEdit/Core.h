@@ -20,7 +20,7 @@ public:
 	static void destory();
 
 	//优先级最高的初始化
-	void init();
+	void init(OSGGraphView* osgView);
 
 	//
 	OSGGraphView* getOSGView();

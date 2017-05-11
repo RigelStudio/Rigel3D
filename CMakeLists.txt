@@ -23,7 +23,7 @@ endif(${CMAKE_SIZEOF_VOID_P} MATCHES 8)
 set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin_${Platform})
 
 # 设置lib库的输出路径，区分32、64
-set(OUTPUT_LIBDIR ${CMAKE_BINARY_DIR}/${Platform}/lib)
+set(OUTPUT_LIBDIR ${CMAKE_SOURCE_DIR}/lib_${Platform})
 
 # 对每一个平台，设置其输出路径
 foreach(CONF ${CMAKE_CONFIGURATION_TYPES})
@@ -54,7 +54,6 @@ include_directories(
 link_directories(
 	${ThirdParty_DIR}/lib
 	${OUTPUT_LIBDIR}
-	${CMAKE_BINARY_DIR}/lib
 )
 
 # 添加子项目

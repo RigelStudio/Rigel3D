@@ -13,6 +13,7 @@
 #pragma comment(lib,"OpenThreadsd.lib")
 #pragma comment(lib,"osgd.lib")
 #pragma comment(lib,"osgGAd.lib")
+#pragma comment(lib,"osgDBd.lib")
 #pragma comment(lib,"osgTextd.lib")
 #pragma comment(lib,"osgUtild.lib")
 #pragma comment(lib,"osgViewerd.lib")

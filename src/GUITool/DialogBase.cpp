@@ -2,7 +2,6 @@
 #include <QSpacerItem>
 #include <QApplication>
 
-
 DialogBase::DialogBase(QWidget *parent)
 	: QDialog(parent)
 {

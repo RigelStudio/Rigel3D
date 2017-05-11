@@ -45,7 +45,6 @@ protected:
 public:
 	OSGWidget* m_pOSGWidget;	//osg的渲染Widget
 	osgViewer::GraphicsWindow* m_pGraphWindow;	//osgViewer的图形窗口
-
 };
 
 #endif // OSGGRAPHVIEW_H

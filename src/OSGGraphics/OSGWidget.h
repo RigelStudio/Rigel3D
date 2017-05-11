@@ -39,4 +39,5 @@ public:
 	osgViewer::Viewer* m_pViewer;
 	osgViewer::GraphicsWindow* m_pGraphicsWindow;
 };
+
 #endif//OSGWIDGET_H

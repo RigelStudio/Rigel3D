@@ -1,3 +1,12 @@
+/*************************************************
+// Copyright(C) MEEngine Team
+// File name:    InputLib.cpp
+// Author:       ∑Î—«
+// Version:      0.1.0
+// Date:         2017-5-11
+// Description:  “¿¿µø‚
+// History:
+*************************************************/
 #ifndef GEOMETRYMODEL_LIB_H
 #define GEOMETRYMODEL_LIB_H
 
@@ -13,4 +22,4 @@
 
 #endif
 
-#endif//GEOMETRYMODEL_LIB_H
+#endif // GEOMETRYMODEL_LIB_H

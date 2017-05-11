@@ -12,7 +12,6 @@ OSGWidget::OSGWidget(QWidget* parent)
 	init();
 }
 
-
 OSGWidget::~OSGWidget()
 {
 }

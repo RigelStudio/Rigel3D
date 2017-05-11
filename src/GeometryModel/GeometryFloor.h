@@ -29,4 +29,4 @@ private:
 	osg::Geometry* createPlane(size_t lenght, size_t width);
 };
 
-#endif//GEOMETRYFLOOR_H
+#endif // GEOMETRYFLOOR_H

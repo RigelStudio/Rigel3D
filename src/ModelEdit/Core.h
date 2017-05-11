@@ -1,10 +1,16 @@
-#ifndef CORE_H
-#define CORE_H
-
+/*************************************************
+// Copyright(C) MEEngine Team
+// File name:    Core.h
+// Author:       ท๋ัว
+// Version:      1.0
+// Date:         2017-5-11
+// Description:  
+//	History:
+*************************************************/
+#ifndef MODELEDIT_CORE_H
+#define MODELEDIT_CORE_H
 #include <QGraphicsScene>
-
 #include <osg/Group>
-
 #include "OSGGraphics/OSGGraphView.h"
 
 class Core
@@ -36,4 +42,4 @@ private:
 	osg::Group* m_pSceneData;
 };
 
-#endif//CORE_H
+#endif // MODELEDIT_CORE_H

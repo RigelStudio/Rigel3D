@@ -12,17 +12,14 @@ find_package(Qt5OpenGL)
 find_package(Qt5Widgets)
 
 # Find all Files
-set(headers
-Export.h
-OSGWidget.h
-OSGGraphView.h
-)
+set(headers Export.h
+			OSGWidget.h
+			OSGGraphView.h
+			Version.h)
 
-set(sources
-InputLib.cpp
-OSGWidget.cpp
-OSGGraphView.cpp
-)
+set(sources InputLib.cpp
+			OSGWidget.cpp
+			OSGGraphView.cpp)
 
 # Qt warp files
 qt5_wrap_ui(Forms_Ui ${forms})

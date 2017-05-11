@@ -17,7 +17,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="ModelEdit.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -1,4 +1,5 @@
 #include "Core.h"
+#include <osgGA/TrackballManipulator>
 
 Core* Core::s_pSelf = nullptr;
 
@@ -28,8 +29,11 @@ void Core::init()
 		m_pGraphScene = new QGraphicsScene;
 		m_pOsgView->setScene(m_pGraphScene);
 	}
+	m_pViewer = m_pOsgView->getViewer();
 	m_pSceneData = new osg::Group;
-	m_pOsgView->getViewer()->setSceneData(m_pSceneData);
+	m_pViewer->setSceneData(m_pSceneData);
+	auto* manipulator = new osgGA::TrackballManipulator;
+	m_pViewer->setCameraManipulator(manipulator);
 }
 
 OSGGraphView* Core::getOSGView()
@@ -52,8 +56,19 @@ osg::Camera* Core::getCamera()
 	return m_pOsgView->getViewer()->getCamera();
 }
 
+osg::Group* Core::getSceneData()
+{
+	return m_pSceneData;
+}
+
+osgGA::CameraManipulator* Core::getManipulator()
+{
+	return m_pViewer->getCameraManipulator();
+}
+
 Core::Core()
 {
+	m_pViewer = nullptr;
 	m_pOsgView = nullptr;
 	m_pGraphScene = nullptr;
 }

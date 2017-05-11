@@ -31,6 +31,10 @@ public:
 
 	osg::Camera* getCamera();
 
+	osg::Group* getSceneData();
+
+	osgGA::CameraManipulator* getManipulator();
+
 private:
 	Core();
 	~Core();
@@ -38,6 +42,7 @@ private:
 private:
 	static Core* s_pSelf;
 	OSGGraphView* m_pOsgView;
+	osgViewer::Viewer* m_pViewer;
 	QGraphicsScene* m_pGraphScene;
 	osg::Group* m_pSceneData;
 };

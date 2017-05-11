@@ -24,7 +24,7 @@ void GeometryFloor::createFloor(size_t lenght, size_t width)
 	plane->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
 	
 	//ÉèÖÃ¿ÌÏßäÖÈ¾×´Ì¬
-	osg::Geometry* gird = createPlane(10, 10);
+	osg::Geometry* gird = createPlane(lenght, lenght);
 	osg::StateSet* stateset = gird->getOrCreateStateSet();  
 	osg::ref_ptr<osg::PolygonOffset> polyoffset = new osg::PolygonOffset;  
 	polyoffset->setFactor(-1.0f);  
@@ -38,7 +38,7 @@ void GeometryFloor::createFloor(size_t lenght, size_t width)
 	polymode->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::LINE);  
 	stateset->setAttribute(polymode);
 	stateset->setAttribute(polyoffset);
-	//addDrawable(gird);
+	addDrawable(gird);
 }
 
 osg::Geometry*  GeometryFloor::createPlane(size_t lenght, size_t width)

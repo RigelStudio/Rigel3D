@@ -20,6 +20,9 @@ public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 
 private:
+	void initScene();
+
+private:
 	Ui::MainWindowClass ui;
 };
 

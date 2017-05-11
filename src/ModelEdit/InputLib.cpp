@@ -15,7 +15,10 @@
 #pragma comment(lib,"osgText.lib")
 #pragma comment(lib,"osgUtil.lib")
 #pragma comment(lib,"osgViewer.lib")
+
+#pragma comment(lib,"GUITool.lib")
 #pragma comment(lib,"osgGraphics.lib")
+
 #endif
 
 #endif//MODELEDIT_LIB_H

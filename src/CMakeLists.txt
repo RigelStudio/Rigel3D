@@ -19,11 +19,11 @@ else(${CMAKE_SIZEOF_VOID_P} MATCHES 8)
 	SET(Platform "win32")
 endif(${CMAKE_SIZEOF_VOID_P} MATCHES 8)
 
-# 设置输出路径，区分32、64
-set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin_${Platform})
+# 设置输出路径
+set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin)
 
-# 设置lib库的输出路径，区分32、64
-set(OUTPUT_LIBDIR ${CMAKE_BINARY_DIR}/${Platform}/lib)
+# 设置lib库的输出路径
+set(OUTPUT_LIBDIR ${CMAKE_BINARY_DIR}/lib)
 
 # 对每一个平台，设置其输出路径
 foreach(CONF ${CMAKE_CONFIGURATION_TYPES})

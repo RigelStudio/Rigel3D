@@ -3,6 +3,7 @@
 #include <osg/PolygonOffset>
 #include <osg/PolygonMode>
 #include <osgDB/ReadFile>
+#include <osg/LineWidth>
 #include <osg/Image>
 #include <osg/Texture2D>
 
@@ -27,17 +28,18 @@ void GeometryFloor::createFloor(size_t lenght, size_t width)
 	osg::Geometry* gird = createPlane(lenght, lenght);
 	osg::StateSet* stateset = gird->getOrCreateStateSet();  
 	osg::ref_ptr<osg::PolygonOffset> polyoffset = new osg::PolygonOffset;  
-	polyoffset->setFactor(-1.0f);  
-	polyoffset->setUnits(-3.0f);
+	polyoffset->setFactor(1.0f);  
+	polyoffset->setUnits(1.0f);
 
  	osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
  	colors->push_back(osg::Vec4(1.0, 1.0, 1.0, 1.0));
- 	gird->setColorArray(colors, osg::Array::BIND_PER_VERTEX);
+ 	gird->setColorArray(colors, osg::Array::BIND_OVERALL);
 
 	osg::ref_ptr<osg::PolygonMode> polymode = new osg::PolygonMode;  
 	polymode->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::LINE);  
 	stateset->setAttribute(polymode);
 	stateset->setAttribute(polyoffset);
+	stateset->setAttribute(new osg::LineWidth(2.0));
 	addDrawable(gird);
 }
 
@@ -49,7 +51,7 @@ osg::Geometry*  GeometryFloor::createPlane(size_t lenght, size_t width)
 	osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array;
 	osg::ref_ptr<osg::Vec2Array> texCoord = new osg::Vec2Array;
 	osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-	colors->push_back(osg::Vec4(0.35, 0.4, 0.35, 1.0));
+	colors->push_back(osg::Vec4(0.1, 0.1, 0.1, 1.0));
 	geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
 	for (size_t row = 0; row < lenght; row++)

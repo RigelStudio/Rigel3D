@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "Core.h"
-#include "GeoMetryModel/GeometryFloor.h"
+#include "GeoMetry/GeometryFloor.h"
 #include <osgDB/ReadFile>
 
 MainWindow::MainWindow(QWidget *parent)

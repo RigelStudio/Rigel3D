@@ -58,7 +58,7 @@ source_group("Generated Files" FILES ${Forms_Ui} ${Headers_Moc} ${Res_Qrc})
 add_executable(${TargetName} ${sources} ${Forms_Ui} ${Headers_Moc} ${Res_Qrc} ${headers} ${icon})
 
 # Add dependncies
-add_dependencies(${TargetName}  OSGGraphics)
+add_dependencies(${TargetName}  MECore)
 
 set_target_properties(${TargetName} PROPERTIES DEBUG_OUTPUT_NAME "${TargetName}${CMAKE_DEBUG_POSTFIX}")
 set_target_properties(${TargetName} PROPERTIES RELEASE_OUTPUT_NAME "${TargetName}${CMAKE_RELEASE_POSTFIX}")

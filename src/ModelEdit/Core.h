@@ -11,7 +11,7 @@
 #define MODELEDIT_CORE_H
 #include <QGraphicsScene>
 #include <osg/Group>
-#include "OSGGraphics/OSGGraphView.h"
+#include "MECore/OSGGraphView.h"
 
 class Core
 {

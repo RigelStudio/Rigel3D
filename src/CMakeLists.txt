@@ -12,7 +12,7 @@
 #add_subdirectory(Application)
 
 #add_subdirectory(Geometry)
+add_subdirectory(MECore)
 add_subdirectory(GeometryModel)
-add_subdirectory(OSGGraphics)
 add_subdirectory(GUITool)
 add_subdirectory(ModelEdit)

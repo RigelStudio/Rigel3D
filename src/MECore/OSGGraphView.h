@@ -19,7 +19,7 @@
 
 #include "OSGWidget.h"
 
-class OSGWIDGET_EXPORT OSGGraphView : public QGraphicsView
+class MECORE_EXPORT OSGGraphView : public QGraphicsView
 {
 
 public:

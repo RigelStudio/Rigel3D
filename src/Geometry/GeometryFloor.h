@@ -15,7 +15,7 @@
 #include <osg/Geode>
 #include <osg/Geometry>
 
-class GEOMETRYMODEL_EXPORT GeometryFloor : public osg::Geode
+class GEOMETRY_EXPORT GeometryFloor : public osg::Geode
 {
 public:
 	GeometryFloor(size_t lenght = 50, size_t width = 50);

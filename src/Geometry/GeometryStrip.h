@@ -15,7 +15,7 @@
 #include <osg/Geode>
 #include <osg/Geometry>
 
-class GeometryStrip
+class GEOMETRY_EXPORT GeometryStrip
 {
 public:
 	GeometryStrip();

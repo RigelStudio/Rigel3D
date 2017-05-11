@@ -16,7 +16,7 @@
 #include <QGLWidget>
 #include <osgViewer/Viewer>
 
-class OSGWIDGET_EXPORT OSGWidget : public QGLWidget
+class MECORE_EXPORT OSGWidget : public QGLWidget
 {
 public:
 	OSGWidget(QWidget* parent = nullptr);

@@ -1,5 +1,5 @@
 # Set porject name
-set(TargetName OSGGraphics)
+set(TargetName MECore)
 string(TOUPPER ${TargetName} TargetNameUP)
 
 # Find includes in corresponding build directories
@@ -15,11 +15,13 @@ find_package(Qt5Widgets)
 set(headers Export.h
 			OSGWidget.h
 			OSGGraphView.h
-			Version.h)
+			Version.h
+			FileUtils.h)
 
 set(sources InputLib.cpp
 			OSGWidget.cpp
-			OSGGraphView.cpp)
+			OSGGraphView.cpp
+			FileUtils.cpp)
 
 # Qt warp files
 qt5_wrap_ui(Forms_Ui ${forms})

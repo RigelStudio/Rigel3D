@@ -17,8 +17,10 @@
 #pragma comment(lib,"osgTextd.lib")
 #pragma comment(lib,"osgUtild.lib")
 #pragma comment(lib,"osgViewerd.lib")
-#pragma comment(lib,"osgGraphicsd.lib")
 #pragma comment(lib,"Geometryd.lib")
+#pragma comment(lib,"GUIToold.lib")
+#pragma comment(lib,"MECored.lib")
+
 #else
 #pragma comment(lib,"OpenThreads.lib")
 #pragma comment(lib,"osg.lib")
@@ -29,8 +31,9 @@
 #pragma comment(lib,"osgViewer.lib")
 
 #pragma comment(lib,"GUITool.lib")
-#pragma comment(lib,"osgGraphics.lib")
 #pragma comment(lib,"Geometry.lib")
+#pragma comment(lib,"MECore.lib")
+
 #endif
 
 #endif // MODELEDIT_INPUTLIB_H

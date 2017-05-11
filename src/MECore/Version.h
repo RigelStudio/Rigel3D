@@ -17,7 +17,7 @@
 #define MEENGINE_MINOR_VERSION    1
 #define MEENGINE_PATCH_VERSION    0
 
-class OSGWIDGET_EXPORT VersionApp
+class MECORE_EXPORT VersionApp
 {
 public:
 	static const std::string getMEEngineVersion()

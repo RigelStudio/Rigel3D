@@ -29,5 +29,6 @@
 *.app
 
 #project
+Projects
 bin_x64
 build

@@ -1,5 +1,5 @@
 # Set porject name
-set(TargetName Geometry)
+set(TargetName MEMath)
 string(TOUPPER ${TargetName} TargetNameUP)
 
 # Find includes in corresponding build directories
@@ -7,18 +7,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(headers
 Export.h
-Style.h
-GeometryBase.h
-GeometryFloor.h
-GeometryStrip.h
 )
 
 set(sources
 InputLib.cpp
-Style.cpp
-GeometryBase.cpp
-GeometryFloor.cpp
-GeometryStrip.cpp
 )
 
 

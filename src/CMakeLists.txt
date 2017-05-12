@@ -12,6 +12,7 @@
 #add_subdirectory(Application)
 
 
+add_subdirectory(MEMath)
 add_subdirectory(Geometry)
 add_subdirectory(MECore)
 add_subdirectory(GUITool)

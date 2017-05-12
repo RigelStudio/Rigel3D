@@ -7,22 +7,15 @@
 // Description:  “¿¿µø‚
 // History:
 *************************************************/
-#ifndef GEOMETRYMODEL_LIB_H
-#define GEOMETRYMODEL_LIB_H
+#ifndef MEMATH_INPUTLIB_H
+#define MEMATH_INPUTLIB_H
 
 #ifdef _DEBUG
-#pragma comment(lib,"OpenThreadsd.lib")
 #pragma comment(lib,"osgd.lib")
-#pragma comment(lib,"osgDBd.lib")
-
-#pragma comment(lib,"MEMathd.lib")
 
 #else
-#pragma comment(lib,"OpenThreads.lib")
 #pragma comment(lib,"osg.lib")
-#pragma comment(lib,"osgDB.lib")
 
-#pragma comment(lib,"MEMath.lib")
 #endif
 
-#endif // GEOMETRYMODEL_LIB_H
+#endif //MEMATH_INPUTLIB_H

@@ -14,18 +14,41 @@
 #include <QString>
 #include "Export.h"
 
-////////////////////////////////////////////////
-// 使用方式为在main函数的入口处，调用init,
-// 所得目录即为根目录，之后获取的目录都以此为基目录
-// FileUtils::ins()->init("D:/project/");
-////////////////////////////////////////////////
+/* 本类的功能：根据相对路径获取文件的绝对路径
+ *   
+ * 本类是一个单件
+ * 在程序中需要进行模型，图片文件查找的地方使用
+ */ 
 class MECORE_EXPORT FileUtils
 {
 public:
+	/*
+	 * @return FileUtils*:单例类实例
+	 * @see    des()
+	 * @note   获取唯一实例:FileUtils::ins()->init("D:/project/");
+	 */
 	static FileUtils* ins();
+
+	/*
+	* @see    ins()
+	* @note   销毁唯一实例
+	*/
 	static void des();
 
+	/*
+	* @param name:根目录名称
+	* @see   getPath()
+	* @note  初始化根目录
+	*/
 	void init(const QString& name);
+
+	/*
+	* @param name:文件名称或者相对路径
+	* @return 文件的绝对路径
+	* @see   init()
+	* @note  根据给定的文件名称，或者绝对文件路径
+	* QString strImagePath = FileUtils::ins()->getPath("image.png");
+	*/
 	QString getPath(const QString& name);
 
 private:

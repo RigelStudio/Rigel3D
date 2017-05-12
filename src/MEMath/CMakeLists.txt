@@ -7,10 +7,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(headers
 Export.h
+MEMath.h
 )
 
 set(sources
 InputLib.cpp
+MEMath.cpp
 )
 
 

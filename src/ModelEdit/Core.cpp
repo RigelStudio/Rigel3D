@@ -1,5 +1,4 @@
 #include "Core.h"
-#include <osgGA/TrackballManipulator>
 
 Core* Core::s_pSelf = nullptr;
 
@@ -21,20 +20,19 @@ void Core::destory()
 	}
 }
 
-void Core::init(OSGGraphView* osgView)
+void Core::init(GraphicsView* osgView)
 {
-	m_pOsgView = osgView;
-	m_pGraphScene = new QGraphicsScene;
-	m_pOsgView->setScene(m_pGraphScene);
-	m_pViewer = m_pOsgView->getViewer();
-	m_pSceneData = new osg::Group;
-	m_pViewer->setSceneData(m_pSceneData);
-	auto* manipulator = new osgGA::TrackballManipulator;
-	m_pViewer->setCameraManipulator(manipulator);
+	if (osgView)
+	{
+		m_pOsgView = osgView;
+		m_pGraphScene = m_pOsgView->scene();
+		m_pViewer = m_pOsgView->getOSGViewer();
+		m_pSceneData = m_pOsgView->getRoot();
+	}
 }
 
 
-OSGGraphView* Core::getOSGView()
+GraphicsView* Core::getOSGView()
 {
 	return m_pOsgView;
 }
@@ -46,12 +44,12 @@ QGraphicsScene* Core::getGraphScene()
 
 osgViewer::Viewer* Core::getViewer()
 {
-	return m_pOsgView->getViewer();
+	return m_pOsgView->getOSGViewer();
 }
 
 osg::Camera* Core::getCamera()
 {
-	return m_pOsgView->getViewer()->getCamera();
+	return m_pOsgView->getOSGViewer()->getCamera();
 }
 
 osg::Group* Core::getSceneData()

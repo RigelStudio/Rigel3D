@@ -19,9 +19,7 @@ set(qrcs ${TargetName}.qrc)
 
 #set(icon ${TargetName}.ico ${TargetName}.rc)
 
-set(forms
-MainWindow.ui
-)
+set(forms MainWindow.ui)
 
 set(headers
 Core.h
@@ -33,29 +31,32 @@ main.cpp
 Core.cpp
 InputLib.cpp
 MainWindow.cpp
-			)
+)
+
+set(mainWidgetForms MainWidget/AppHeadeTitle.ui)
+
+set(mainWidgetHeaders MainWidget/AppHeadeTitle.h)
+
+set(mainWidgetSources MainWidget/AppHeadeTitle.cpp)
 
 # Qt warp files
-qt5_wrap_ui(Forms_Ui ${forms})
-qt5_wrap_cpp(Headers_Moc ${headers})
+qt5_wrap_ui(Forms_Ui ${forms} ${mainWidgetForms})
+qt5_wrap_cpp(Headers_Moc ${headers} ${mainWidgetHeaders})
 qt5_add_resources(Res_Qrc ${qrcs})
 
 # add definitions,unicode and export
 add_definitions(-DUNICODE -D_UNICODE -D${TargetNameUP}_EXPORTS)
-
-include_directories(
-	${CMAKE_BINARY_DIR}/OSGGraphics
-	${CMAKE_BINARY_DIR}
-)
 
 # Set porject filiter
 source_group("Header Files" FILES ${headers})
 source_group("Form Files" FILES ${forms})
 source_group("Resource Files" FILES ${qrcs} ${icon})
 source_group("Generated Files" FILES ${Forms_Ui} ${Headers_Moc} ${Res_Qrc})
+source_group("MainWidget" FILES ${mainWidgetForms} ${mainWidgetHeaders} ${mainWidgetSources})
 
 # Tell CMake to create the TargetName executable
-add_executable(${TargetName} ${sources} ${Forms_Ui} ${Headers_Moc} ${Res_Qrc} ${headers} ${icon})
+add_executable(${TargetName} ${sources} ${Forms_Ui} ${Headers_Moc} ${Res_Qrc} ${headers} ${icon}
+				${mainWidgetHeaders} ${mainWidgetSources})
 
 # Add dependncies
 add_dependencies(${TargetName}  MECore)

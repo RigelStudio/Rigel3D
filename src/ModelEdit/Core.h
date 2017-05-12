@@ -11,7 +11,7 @@
 #define MODELEDIT_CORE_H
 #include <QGraphicsScene>
 #include <osg/Group>
-#include "MECore/OSGGraphView.h"
+#include "MECore/GraphicsView.h"
 
 class Core
 {
@@ -20,10 +20,10 @@ public:
 	static void destory();
 
 	//优先级最高的初始化
-	void init(OSGGraphView* osgView);
+	void init(GraphicsView* osgView);
 
 	//
-	OSGGraphView* getOSGView();
+	GraphicsView* getOSGView();
 
 	QGraphicsScene* getGraphScene();
 
@@ -41,7 +41,7 @@ private:
 
 private:
 	static Core* s_pSelf;
-	OSGGraphView* m_pOsgView;
+	GraphicsView* m_pOsgView;
 	osgViewer::Viewer* m_pViewer;
 	QGraphicsScene* m_pGraphScene;
 	osg::Group* m_pSceneData;

@@ -21,15 +21,13 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 
-protected:
-	virtual void resizeEvent(QResizeEvent* event);
-
 private:
 	void initScene();
 
 	void initSimon();
 
 	void initKestiny();
+
 private:
 	Ui::MainWindowClass ui;
 	AppHeadeTitle* m_pAppTitle;

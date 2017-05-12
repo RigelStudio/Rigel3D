@@ -51,6 +51,8 @@ public:
 	*/
 	QString getPath(const QString& name);
 
+	std::string getPath(const std::string& name);
+
 private:
 	FileUtils();
 	~FileUtils();

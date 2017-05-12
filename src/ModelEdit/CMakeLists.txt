@@ -24,6 +24,7 @@ set(forms MainWindow.ui)
 set(headers
 Core.h
 MainWindow.h
+TextureRolling.h
 )
 
 set(sources
@@ -31,6 +32,7 @@ main.cpp
 Core.cpp
 InputLib.cpp
 MainWindow.cpp
+TextureRolling.cpp
 )
 
 set(mainWidgetForms MainWidget/AppHeadeTitle.ui)

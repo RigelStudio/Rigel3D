@@ -22,7 +22,7 @@ void GraphicsView::init()
 	glViewPort->setMaximumSize(2000, 2000);
 	this->setViewport(glViewPort);
 	this->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-	startTimer(20);
+	startTimer(10);
 
 	m_pSceneData = new osg::Group;
 	m_pSceneData->setName("root");

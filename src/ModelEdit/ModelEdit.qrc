@@ -1,13 +1,13 @@
 <RCC>
-  <qresource prefix="/">
-    <file>Resources/bottom_bg.png</file>
-    <file>Resources/dataBase.png</file>
-    <file>Resources/dataBase_h.png</file>
-    <file>Resources/function.png</file>
-    <file>Resources/function_h.png</file>
-    <file>Resources/project.png</file>
-    <file>Resources/project_h.png</file>
-    <file>Resources/query.png</file>
-    <file>Resources/query_h.png</file>
-  </qresource>
+    <qresource prefix="/">
+        <file>Resources/bottom_bg.png</file>
+        <file>Resources/dataBase.png</file>
+        <file>Resources/dataBase_h.png</file>
+        <file>Resources/function.png</file>
+        <file>Resources/function_h.png</file>
+        <file>Resources/project.png</file>
+        <file>Resources/project_h.png</file>
+        <file>Resources/query.png</file>
+        <file>Resources/query_h.png</file>
+    </qresource>
 </RCC>

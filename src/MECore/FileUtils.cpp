@@ -44,3 +44,8 @@ QString FileUtils::getPath(const QString& name)
 {
 	return m_strRoot + name;
 }
+
+std::string FileUtils::getPath(const std::string& name)
+{
+	return m_strRoot.toStdString() + name;
+}

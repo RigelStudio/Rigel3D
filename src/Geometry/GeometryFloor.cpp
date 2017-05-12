@@ -74,8 +74,8 @@ osg::Geometry*  GeometryFloor::createPlane(size_t lenght, size_t width)
 	size_t count = vertices->size();
 	for (size_t i = 0; i < count; i++)
 	{
-	vertices->at(i).x() -= lenght / 2;
-	vertices->at(i).y() -= width / 2;
+		vertices->at(i).x() -= lenght / 2;
+		vertices->at(i).y() -= width / 2;
 	}
 	geom->setVertexArray(vertices);
 	geom->setTexCoordArray(0, texCoord);

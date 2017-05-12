@@ -5,7 +5,7 @@
 // Version:      1.0
 // Date:         2017-5-11
 // Description:  
-//	History:
+// History:
 *************************************************/
 #ifndef MODELEDIT_CORE_H
 #define MODELEDIT_CORE_H
@@ -20,7 +20,7 @@ public:
 	static void destory();
 
 	//优先级最高的初始化
-	void init();
+	void init(OSGGraphView* osgView);
 
 	//
 	OSGGraphView* getOSGView();

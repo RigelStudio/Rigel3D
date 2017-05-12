@@ -4,6 +4,7 @@
 OSGGraphView::OSGGraphView()
 {
 	m_pOSGWidget = new OSGWidget;
+	m_pOSGWidget->setFormat(QGLFormat(QGL::DoubleBuffer));
 	m_pGraphWindow = m_pOSGWidget->getGraphicsWindow();
 	setViewport(m_pOSGWidget);
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -220,16 +221,19 @@ void OSGGraphView::wheelEvent(QWheelEvent* event)
 
 void OSGGraphView::resizeEvent(QResizeEvent *event)
 {
-	if (scene())
-	{
-		scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
-	}
-
+	
+  	if (scene())
+  	{
+  		scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+		scene()->update();
+  	}
 	const QSize& size = event->size();
-	m_pGraphWindow->resized(x(), y(), size.width(), size.height());
-	m_pGraphWindow->getEventQueue()->windowResize(x(), y(), size.width(), size.height());
+	int scaled_width = size.width() * devicePixelRatio();
+	int scaled_height = size.height() * devicePixelRatio();
+	m_pGraphWindow->resized(x(), y(), scaled_width, scaled_height);
+	m_pGraphWindow->getEventQueue()->windowResize(x(), y(), scaled_width, scaled_height);
 	m_pGraphWindow->requestRedraw();
-	QGraphicsView::resizeEvent(event);
+
 }
 
 void OSGGraphView::moveEvent(QMoveEvent* event)

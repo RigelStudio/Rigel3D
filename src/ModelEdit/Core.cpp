@@ -21,20 +21,18 @@ void Core::destory()
 	}
 }
 
-void Core::init()
+void Core::init(OSGGraphView* osgView)
 {
-	if (m_pOsgView == nullptr)
-	{
-		m_pOsgView = new OSGGraphView;
-		m_pGraphScene = new QGraphicsScene;
-		m_pOsgView->setScene(m_pGraphScene);
-	}
+	m_pOsgView = osgView;
+	m_pGraphScene = new QGraphicsScene;
+	m_pOsgView->setScene(m_pGraphScene);
 	m_pViewer = m_pOsgView->getViewer();
 	m_pSceneData = new osg::Group;
 	m_pViewer->setSceneData(m_pSceneData);
 	auto* manipulator = new osgGA::TrackballManipulator;
 	m_pViewer->setCameraManipulator(manipulator);
 }
+
 
 OSGGraphView* Core::getOSGView()
 {

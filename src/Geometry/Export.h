@@ -7,13 +7,13 @@
 // Description:  dll导出宏定义
 //	History:
 *************************************************/
-#ifndef GEOMETRYMODEL_EXPORT_H
-#define GEOMETRYMODEL_EXPORT_H
+#ifndef GEOMETRY_EXPORT_H
+#define GEOMETRY_EXPORT_H
 
-#if defined (GEOMETRYMODEL_EXPORTS)
-#	define GEOMETRYMODEL_EXPORT __declspec(dllexport)
+#if defined (GEOMETRY_EXPORTS)
+#	define GEOMETRY_EXPORT __declspec(dllexport)
 #else 
-#	define GEOMETRYMODEL_EXPORT __declspec(dllimport)
+#	define GEOMETRY_EXPORT __declspec(dllimport)
 #endif 
 
 #endif // GEOMETRYMODEL_EXPORT_H

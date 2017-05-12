@@ -29,6 +29,11 @@ void OSGWidget::init()
  	m_timer.start(16);
 }
 
+osg::Camera* OSGWidget::createCamera(int x, int y, int w, int h)
+{
+	return nullptr;
+}
+
 void OSGWidget::setGraphicsWindow(osgViewer::GraphicsWindow* graphicsWindow)
 {
 	m_pGraphicsWindow = graphicsWindow;
@@ -41,5 +46,8 @@ void OSGWidget::paintGL()
 
 void OSGWidget::resizeEvent(QResizeEvent *e)
 {
-	m_pViewer->getCamera()->setViewport(0, 0, width(), height());
+	m_pGraphicsWindow->resized(x(), y(), width(), height());
+	m_pGraphicsWindow->getEventQueue()->windowResize(x(), y(), width(), height());
+	m_pGraphicsWindow->requestRedraw();
+	//m_pViewer->getCamera()->setViewport(0, 0, width(), height());
 }

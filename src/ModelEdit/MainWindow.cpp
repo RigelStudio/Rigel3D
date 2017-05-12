@@ -1,16 +1,18 @@
 #include "MainWindow.h"
 #include <osgDB/ReadFile>
 #include "Core.h"
-#include "GeoMetryModel/GeometryFloor.h"
+#include "GeoMetry/GeometryFloor.h"
+#include <osgDB/ReadFile>
 #include "MECore/FileUtils.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	//auto* osgView = new OSGGraphView;
-	//setCentralWidget(osgView);
-	setCentralWidget(Core::ins()->getOSGView());
+	auto* osgView = new OSGGraphView;
+	setCentralWidget(osgView);
+	Core::ins()->init(osgView);
 	initScene();
 }
 

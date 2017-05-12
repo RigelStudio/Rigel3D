@@ -1,0 +1,47 @@
+/*程序标题背景图*/
+QWidget#widgetTitle{
+	border-image: url(./skin/Titles/banner.png);
+}
+/*标题icon*/
+#labelTitleIcon{
+	padding-bottom:4px;
+	border-image: url(./skin/melogo.png);
+}
+
+#widgetSpacing{
+	border-image: url(./skin/Titles/spacing.png);
+}
+
+/*退出按钮*/
+#pushButtonExit{
+	border-image: url(./skin/Titles/exit_0.png);
+}
+#pushButtonExit:hover{
+	border-image: url(./skin/Titles/exit_1.png);
+}
+
+#pushButtonExit:pressed{
+	border-image: url(./skin/Titles/exit_0.png);
+}
+
+/*标题菜单栏*/
+QWidget#AppHeadTitle{
+	background:transparent;
+}
+
+#pushButtonDocMan,#pushButtonDecisiondMan,#pushButtonFightLayout,#pushButtonDatabaseCenter,#pushButtonAccidentCase{
+	border:0px;
+	background:transparent;
+	min-width:264px;
+	min-height:40px;
+	color: rgb(152, 152, 152);
+	font: 18pt "微软雅黑";
+}
+#pushButtonDocMan:checked,#pushButtonDecisiondMan:checked,#pushButtonFightLayout:checked,#pushButtonDatabaseCenter:checked,#pushButtonAccidentCase:checked{
+	color: rgb(255, 255, 255);
+	border-image: url(./skin/Titles/tab_1.png);
+}
+#pushButtonDocMan:hover,#pushButtonDecisiondMan:hover,#pushButtonFightLayout:hover,#pushButtonDatabaseCenter:hover,#pushButtonAccidentCase:hover{
+	color: rgb(255, 255, 255);
+	border-image: url(./skin/Titles/tab_1.png);
+}

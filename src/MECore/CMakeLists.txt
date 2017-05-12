@@ -14,14 +14,16 @@ find_package(Qt5Widgets)
 # Find all Files
 set(headers Export.h
 			OSGWidget.h
-			OSGGraphView.h
 			Version.h
-			FileUtils.h)
+			FileUtils.h
+			GraphicsView.h
+			EventAdapter.h)
 
 set(sources InputLib.cpp
 			OSGWidget.cpp
-			OSGGraphView.cpp
-			FileUtils.cpp)
+			FileUtils.cpp
+			GraphicsView.cpp
+			EventAdapter.cpp)
 
 # Qt warp files
 qt5_wrap_ui(Forms_Ui ${forms})

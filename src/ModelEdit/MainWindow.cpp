@@ -8,9 +8,9 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	auto* osgView = new OSGGraphView;
-	setCentralWidget(osgView);
-	//setCentralWidget(Core::ins()->getOSGView());
+	//auto* osgView = new OSGGraphView;
+	//setCentralWidget(osgView);
+	setCentralWidget(Core::ins()->getOSGView());
 	initScene();
 }
 

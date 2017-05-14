@@ -61,7 +61,7 @@ add_executable(${TargetName} ${sources} ${Forms_Ui} ${Headers_Moc} ${Res_Qrc} ${
 				${mainWidgetHeaders} ${mainWidgetSources})
 
 # Add dependncies
-add_dependencies(${TargetName}  MECore)
+add_dependencies(${TargetName}  MECore Geometry)
 
 set_target_properties(${TargetName} PROPERTIES DEBUG_OUTPUT_NAME "${TargetName}${CMAKE_DEBUG_POSTFIX}")
 set_target_properties(${TargetName} PROPERTIES RELEASE_OUTPUT_NAME "${TargetName}${CMAKE_RELEASE_POSTFIX}")

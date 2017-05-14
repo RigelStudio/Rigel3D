@@ -16,7 +16,7 @@ GeometryStrip::GeometryStrip(void)
 
 GeometryStrip::GeometryStrip(osg::Vec3Array* vertexs)
 {
-	m_numWidth = 1.0;
+	m_numWidth = 1.5;
 	m_pLefts = new osg::Vec3Array;
 	m_pRights = new osg::Vec3Array;
 	m_pTempArray = new osg::Vec3Array;
@@ -52,10 +52,10 @@ void GeometryStrip::updateGeomtry()
  	removePrimitiveSet(0,size);
  	createStrip();
  	setTexCoordArray(0, m_pTextureArray);
- 	osgUtil::Tessellator tessellator;
- 	tessellator.retessellatePolygons(*this);
+ 	//osgUtil::Tessellator tessellator;
+ //	tessellator.retessellatePolygons(*this);
  	addPrimitiveSet(new osg::DrawArrays(
- 		osg::PrimitiveSet::TRIANGLE_STRIP, 0, m_pVertexArray->size()));
+ 		osg::PrimitiveSet::LINE_STRIP, 0, m_pVertexArray->size()));
  	m_pVertexArray->dirty();
 }
 
@@ -72,50 +72,49 @@ void GeometryStrip::createStrip()
   	m_pVertexArray->clear();
   	m_pTextureArray->clear();
   	m_pNormalArray->clear();
- 	MEMath::createStrip(m_numWidth, m_pSouceArray, m_pLefts, m_pRights);
-	size_t countL = m_pRights->size();
+ 	MEMath::createStripRound(m_numWidth, m_pSouceArray, m_pLefts, m_pRights);
+	m_pRights = MEMath::BezierCurve(m_pRights, 1.0);
+	m_pLefts = MEMath::BezierCurve(m_pLefts, 1.0);
+	
 	float _lenghtL = MEMath::getLength(m_pLefts);
 	float _lenghtR = MEMath::getLength(m_pRights);
 	
 	float theL = 0.0;
 	float theR = 0.0;
-	for (size_t i = 0; i < countL; i++)
+	
+	size_t countR = m_pRights->size();
+	for (size_t i = 0; i < countR; i++)
 	{
 		if (i == 0)
 		{
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(0, 0));
 
-			m_pVertexArray->push_back(m_pLefts->at(i));
+			//m_pVertexArray->push_back(m_pLefts->at(i));
 			m_pTextureArray->push_back(osg::Vec2(0, 1));
 		}
-		else if (i < countL - 1)
+		else if (i < countR - 1)
 		{
 
 			auto _pos = m_pRights->at(i);
 			theR += (_pos - m_pRights->at(i - 1)).length();
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(theR /10.0, 0));
-			std::cout << theR / 10.0 <<std::endl;
+
 			_pos = m_pLefts->at(i);
 			theL += (_pos - m_pLefts->at(i - 1)).length();
-			m_pVertexArray->push_back(m_pLefts->at(i));
-			m_pTextureArray->push_back(osg::Vec2(theL /10.0, 1));
-			std::cout << theL / 10.0 << std::endl;
+			//m_pVertexArray->push_back(m_pLefts->at(i));
+			m_pTextureArray->push_back(osg::Vec2(theL / 10.0, 1));
 		}
 		else
 		{
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(_lenghtR /10, 0));
-			std::cout << _lenghtR / 10 << std::endl;
 
-			m_pVertexArray->push_back(m_pLefts->at(i));
-			m_pTextureArray->push_back(osg::Vec2(_lenghtL/10.0, 1));
-			std::cout << _lenghtL / 10.0 << std::endl;
+			//m_pVertexArray->push_back(m_pLefts->at(i));
+			m_pTextureArray->push_back(osg::Vec2(_lenghtL / 10.0, 1));
 		}
-		
 		m_pNormalArray->push_back(osg::Z_AXIS);
 		m_pNormalArray->push_back(osg::Z_AXIS);
 	}
-	
 }

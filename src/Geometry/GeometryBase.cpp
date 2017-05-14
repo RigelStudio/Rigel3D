@@ -25,11 +25,6 @@ GeometryBase::~GeometryBase(void)
 
 void GeometryBase::addPoint(const osg::Vec3 &pos)
 {
-	if (pos == osg::Vec3())
-	{
-		std::cout<<"add the null point"<<std::endl;
-	}
-	//m_pVertexArray->push_back(pos);
 	m_pSouceArray->push_back(pos);
 	updateGeomtry();
 }

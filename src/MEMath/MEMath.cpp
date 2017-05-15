@@ -1,5 +1,5 @@
 #include "MEMath.h"
-
+#include <math.h>
 
 
 MEMath::MEMath()
@@ -66,6 +66,12 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 
 bool MEMath::intersectLine(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::Vec3 posD, osg::Vec3& posInter)
 {
+	// Ax + By + C;
+	float slopeK1 = posB.y() - posA.y() / posB.x() - posA.x();
+	float Bab = posA.y() - slopeK1 * posA.x();
+
+	float slopeK2 = posD.y() - posC.y() / posD.x() - posC.x();
+	float Bcd = posC.y() - slopeK2 * posC.x();
 	return false;
 }
 
@@ -183,7 +189,7 @@ bool MEMath::createStripBevel(float radius, osg::Vec3Array* source, osg::Vec3Arr
 	return true;
 }
 
-bool MEMath::createStripRound(float radius, osg::Vec3Array* source, osg::Vec3Array* lefts, osg::Vec3Array* rights)
+bool MEMath::createStripMiter(float radius, osg::Vec3Array* source, osg::Vec3Array* lefts, osg::Vec3Array* rights)
 {
 	osg::Vec3d zero = osg::Vec3d(0.000000001, 0.000000001, 0.000000001);
 	osg::Vec3Array* vecLine = new osg::Vec3Array;
@@ -222,134 +228,104 @@ bool MEMath::createStripRound(float radius, osg::Vec3Array* source, osg::Vec3Arr
 		}
 		else
 		{
-			currtPos = source->at(i);
-			lastPos = source->at(i - 1);
-			nextPos = source->at(i + 1);
-			currtVec = currtPos - lastPos;
-			nextVec = nextPos - currtPos;
-			currtVec.normalize();
-			nextVec.normalize();
-			vertlVec = currtVec ^ osg::Z_AXIS;
-			nextVerl = nextVec ^ osg::Z_AXIS;
-			osg::Vec3 A1, A2, B1, B2, C1, C2, D1, D2;
-			A1 = lastPos - vertlVec * radius;
-			A2 = currtPos - vertlVec * radius;
-			B1 = lastPos + vertlVec * radius;
-			B2 = currtPos + vertlVec * radius;
-			C1 = currtPos - nextVerl * radius;
-			C2 = nextPos - nextVerl * radius;
-			D1 = currtPos + nextVerl * radius;
-			D2 = nextPos + nextVerl * radius;
-
-			float offset = 1.0;
-			osg::Vec3 interA;
-			bool isInter = intersectSegm(A1, A2, C1, C2, interA);
-			if (isInter)
+			Segment lastVec(source->at(i - 1), source->at(i));
+			Segment nextVec(source->at(i), source->at(i + 1));
+			auto bisVec = lastVec.dir() - nextVec.dir();
+			bisVec.normalize();
+			float cosAB = lastVec.dir() * nextVec.dir() / lastVec.length() * nextVec.length();
+			float R = 0.0;
+			if (cosAB == 0.0)
 			{
-				interA.z() = currtPos.z();
-				lefts->push_back(interA);
-				auto PA = currtPos - interA;
-				PA.normalize();
-				auto quat = osg::Quat(osg::PI, osg::Z_AXIS);
-				rights->push_back(currtPos + quat * PA * radius);
+				R = radius;
 			}
-			osg::Vec3 interB;
-			isInter = intersectSegm(B1, B2, D1, D2, interB);
-			if (isInter)
+			else
 			{
-				interB.z() = currtPos.z();
-				rights->push_back(interB);
-				auto PB = currtPos - interB;
-				PB.normalize();
-				auto quat = osg::Quat(osg::PI, osg::Z_AXIS);
-				lefts->push_back(currtPos + quat * PB * radius);
+				R = radius / cosAB;
 			}
+			
+			lefts->push_back(source->at(i) + bisVec * R * radius);
+			rights->push_back(source->at(i) - bisVec * R * radius);
 			continue;
 		}
 	}
+	return true;
 }
 
-osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* array, float radius)
+osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_t parts)
 {
-	osg::Vec3Array* controlPoint = new osg::Vec3Array;
-	osg::Vec3Array* resultPoint = new osg::Vec3Array;
-
-	//求插值的控制点,线段的1/10和9/10的位置开始插值;
-	double x, x1, x2, y, y1, y2, z, z1, z2;
-	float t;
-	float delta;	//当前插值的点
-	float pCount = 10.0; //一共插值多少个点
-	delta = 0 / pCount;
-
-	//计算控制点
-	for (int i = 1; i <= array->size() - 1; i++)
+	
+	auto countP = vertexs->size();
+	if (countP < 3)
 	{
-		x1 = ((*array)[i].x() - (*array)[i - 1].x())*0.9 + (*array)[i - 1].x();
-		y1 = ((*array)[i].y() - (*array)[i - 1].y())*0.9 + (*array)[i - 1].y();
-		z1 = ((*array)[i].z() - (*array)[i - 1].z())*0.9 + (*array)[i - 1].z();
-
-		x2 = ((*array)[i].x() - (*array)[i - 1].x())*0.1 + (*array)[i - 1].x();
-		y2 = ((*array)[i].y() - (*array)[i - 1].y())*0.1 + (*array)[i - 1].y();
-		z2 = ((*array)[i].z() - (*array)[i - 1].z())*0.1 + (*array)[i - 1].z();
-
+		return nullptr;
+	}
+	auto controlPoints = new osg::Vec3Array;
+	auto resultCurve = new osg::Vec3Array;
+	
+	//	P0
+	//	|
+	//	|
+	//	|
+	//	↓-----------→ P1
+	//	P
+	//
+	//计算控制点
+	
+	for (int i = 1; i < countP; i++)
+	{
+		Segment segPP0(vertexs->at(i - 1), vertexs->at(i));
+		float length = segPP0.length();
+		float pp0Scale = radius/length;
 		if (i == 1)
 		{
-			controlPoint->push_back(osg::Vec3(x2, y2, z2));
+			controlPoints->push_back(segPP0.dir() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
-		else if (i == array->size() - 1)
+		else if (i == countP - 1)
 		{
-			controlPoint->push_back(osg::Vec3(x1, y1, z1));
+			controlPoints->push_back(segPP0.dir() * (pp0Scale) + vertexs->at(i - 1));
 		}
 		else
 		{
-			controlPoint->push_back(osg::Vec3(x1, y1, z1));
-			controlPoint->push_back(osg::Vec3(x2, y2, z2));
+			controlPoints->push_back(segPP0.dir() * pp0Scale + vertexs->at(i - 1));
+			controlPoints->push_back(segPP0.dir() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
 	}
-
-	//插值;
-	for (int m = 0, j = 0; m <= array->size() - 1; m++)
+	auto currPos = osg::Vec3();
+	//进行插值
+	for (int i = 0, j = 0; i < countP; i ++)
 	{
-		if (m == 0)
+		//第一个点和最后一个点都直接添加不插值
+		if (i == 0 || i == countP - 1)
 		{
-			resultPoint->push_back((*array)[0]);
-		}
-		else if (m == array->size() - 1)
-		{
-			resultPoint->push_back((*array)[array->size() - 1]);
+			resultCurve->push_back(vertexs->at(i));
 		}
 		else
 		{
-			if (j <= controlPoint->size())
+			double A1, B1, C1, A2, B2, C2, A3, B3, C3;
+			currPos = vertexs->at(i);
+
+			A1 = (*controlPoints)[j].x();
+			A2 = (currPos.x() - (*controlPoints)[j].x()) * 2;
+			A3 = (*controlPoints)[j + 1].x() - 2 * currPos.x() + (*controlPoints)[j].x();
+
+			B1 = (*controlPoints)[j].y();
+			B2 = (currPos.y() - (*controlPoints)[j].y()) * 2;
+			B3 = (*controlPoints)[j + 1].y() - 2 * currPos.y() + (*controlPoints)[j].y();
+
+			C1 = (*controlPoints)[j].z();
+			C2 = (currPos.z() - (*controlPoints)[j].z()) * 2;
+			C3 = (*controlPoints)[j + 1].z() - 2 * currPos.z() + (*controlPoints)[j].z();
+			j += 2;
+			auto delta = 1.0 / parts;
+			for (int n = 0; n < parts; n++)
 			{
-				double A1, B1, C1, A2, B2, C2, A3, B3, C3;
-				x = (*array)[m].x();
-				y = (*array)[m].y();
-				z = (*array)[m].z();
-
-				A1 = (*controlPoint)[j].x();
-				A2 = (x - (*controlPoint)[j].x()) * 2;
-				A3 = (*controlPoint)[j + 1].x() - 2 * x + (*controlPoint)[j].x();
-
-				B1 = (*controlPoint)[j].y();
-				B2 = (y - (*controlPoint)[j].y()) * 2;
-				B3 = (*controlPoint)[j + 1].y() - 2 * y + (*controlPoint)[j].y();
-
-				C1 = (*controlPoint)[j].z();
-				C2 = (z - (*controlPoint)[j].z()) * 2;
-				C3 = (*controlPoint)[j + 1].z() - 2 * z + (*controlPoint)[j].z();
-				j += 2;
-				for (int i = 0; i < pCount; i++)
-				{
-					t = i * delta;
-					resultPoint->push_back(osg::Vec3(
-						(A1 + A2*t + A3*t*t),
-						(B1 + B2*t + B3*t*t),
-						(C1 + C2*t + C3*t*t)));
-				}
+				auto t = n * delta;
+				resultCurve->push_back(osg::Vec3(
+					(A1 + A2*t + A3*t*t),
+					(B1 + B2*t + B3*t*t),
+					(C1 + C2*t + C3*t*t)));
 			}
 		}
 	}
-
-	return resultPoint;
+	return resultCurve;
 }

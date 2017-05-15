@@ -3,11 +3,11 @@
 #include "Export.h"
 #include <osg/Vec3>
 #include <osg/Array>
+#include "Segment.h"
 
 class MECORE_EXPORT MEMath
 {
-	//定义类型， 线段
-	typedef std::pair<osg::Vec3, osg::Vec3> Segment;
+	//定义类型: 线段
 public:
 	MEMath();
 	~MEMath();
@@ -27,12 +27,12 @@ public:
 	static bool createStripBevel(float radius, osg::Vec3Array* source, 
 		osg::Vec3Array* lefts, osg::Vec3Array* rights);
 
-	//创建一个拐角为圆边的面带,入参是面带的宽度和中点的数组;返回值分成左边的点（参数3）和右边的点（参数4）
-	static bool createStripRound(float radius, osg::Vec3Array* source,
+	//创建一个拐角为尖角的面带,入参是面带的宽度和中点的数组;返回值分成左边的点（参数3）和右边的点（参数4）
+	static bool createStripMiter(float radius, osg::Vec3Array* source,
 		osg::Vec3Array* lefts, osg::Vec3Array* rights);
 
-	//贝塞尔曲线插值， 参数1：插值的数组，参数2：插值半径
-	static osg::Vec3Array* BezierCurve(osg::Vec3Array* array, float radius);
+	//贝塞尔曲线插值， 参数1：插值的数组，参数2：插值半径, 参数3：细分多少段
+	static osg::Vec3Array* BezierCurve(osg::Vec3Array* vertexs, float radius, size_t parts);
 
 };
 

@@ -36,8 +36,8 @@ void MainWindow::initSimon()
 	auto ssm = new osgGA::StateSetManipulator(Core::ins()->getCamera()->getStateSet());
 	Core::ins()->getViewer()->addEventHandler(ssm);
 
-	Core::ins()->getSceneData()->addChild(osgDB::readNodeFile(
-		FileUtils::ins()->getPath(std::string("Data/Models/axes.osgt"))));
+	//Core::ins()->getSceneData()->addChild(osgDB::readNodeFile(
+	//	FileUtils::ins()->getPath(std::string("Data/Models/axes.osgt"))));
 }
 
 void MainWindow::initKestiny()

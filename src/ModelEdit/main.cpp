@@ -24,6 +24,6 @@ int main(int argc, char *argv[])
 	qsrand(QTime::currentTime().msec());
 
 	MainWindow w;
-	w.show();
+	w.showMaximized();
 	return a.exec();
 }

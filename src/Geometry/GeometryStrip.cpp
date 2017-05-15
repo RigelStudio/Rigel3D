@@ -55,7 +55,7 @@ void GeometryStrip::updateGeomtry()
  	//osgUtil::Tessellator tessellator;
  //	tessellator.retessellatePolygons(*this);
  	addPrimitiveSet(new osg::DrawArrays(
- 		osg::PrimitiveSet::LINE_STRIP, 0, m_pVertexArray->size()));
+ 		osg::PrimitiveSet::TRIANGLE_STRIP, 0, m_pVertexArray->size()));
  	m_pVertexArray->dirty();
 }
 
@@ -72,9 +72,9 @@ void GeometryStrip::createStrip()
   	m_pVertexArray->clear();
   	m_pTextureArray->clear();
   	m_pNormalArray->clear();
- 	MEMath::createStripRound(m_numWidth, m_pSouceArray, m_pLefts, m_pRights);
-	m_pRights = MEMath::BezierCurve(m_pRights, 1.0);
-	m_pLefts = MEMath::BezierCurve(m_pLefts, 1.0);
+ 	MEMath::createStripMiter(m_numWidth, m_pSouceArray, m_pLefts, m_pRights);
+	//m_pRights = MEMath::BezierCurve(m_pRights, 2.0, 10);
+	//m_pLefts = MEMath::BezierCurve(m_pLefts, 2.0, 10);
 	
 	float _lenghtL = MEMath::getLength(m_pLefts);
 	float _lenghtR = MEMath::getLength(m_pRights);
@@ -90,7 +90,7 @@ void GeometryStrip::createStrip()
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(0, 0));
 
-			//m_pVertexArray->push_back(m_pLefts->at(i));
+			m_pVertexArray->push_back(m_pLefts->at(i));
 			m_pTextureArray->push_back(osg::Vec2(0, 1));
 		}
 		else if (i < countR - 1)
@@ -101,17 +101,17 @@ void GeometryStrip::createStrip()
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(theR /10.0, 0));
 
-			_pos = m_pLefts->at(i);
-			theL += (_pos - m_pLefts->at(i - 1)).length();
-			//m_pVertexArray->push_back(m_pLefts->at(i));
+ 			_pos = m_pLefts->at(i);
+ 			theL += (_pos - m_pLefts->at(i - 1)).length();
+ 			m_pVertexArray->push_back(m_pLefts->at(i));
 			m_pTextureArray->push_back(osg::Vec2(theL / 10.0, 1));
 		}
-		else
+		else if ( i == countR - 1)
 		{
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(_lenghtR /10, 0));
 
-			//m_pVertexArray->push_back(m_pLefts->at(i));
+			m_pVertexArray->push_back(m_pLefts->at(i));
 			m_pTextureArray->push_back(osg::Vec2(_lenghtL / 10.0, 1));
 		}
 		m_pNormalArray->push_back(osg::Z_AXIS);

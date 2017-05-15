@@ -26,7 +26,7 @@ void TextureRolling::createStrip()
 		auto _array = new osg::Vec3Array;
 		_array->push_back(osg::Vec3(0, 0, 0));
 		_array->push_back(osg::Vec3(20, 0, 0));
-		_array->push_back(osg::Vec3(5, 10, 0));
+		//_array->push_back(osg::Vec3(5, 10, 0));
 		//_array->push_back(osg::Vec3(8, 3, 0));
 		m_pStrip = new GeometryStrip(_array);
 		m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
@@ -50,5 +50,6 @@ void TextureRolling::createShader()
 	profram->addShader(fragShader);
 
 	m_pStateSet->addUniform(new osg::Uniform("sampler", 0));
+
 	m_pStateSet->setAttributeAndModes(profram);
 }

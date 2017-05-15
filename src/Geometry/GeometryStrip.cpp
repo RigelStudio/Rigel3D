@@ -92,13 +92,23 @@ void GeometryStrip::createStrip()
 		else if (i < countL - 1)
 		{
 
-			auto _pos = m_pRights->at(i);
-			theR += (_pos - m_pRights->at(i - 1)).length();
+			auto _posR = m_pRights->at(i);
+			auto _posL = m_pLefts->at(i);
+			float currR = (_posR - m_pRights->at(i - 1)).length();
+			float currL = (_posL - m_pLefts->at(i - 1)).length();
+			//if (currR == 0.0)
+			{
+				theR += currR;
+			}
+			//else if (currL == 0.0)
+			{
+				theL += currL;
+			}
+
 			m_pVertexArray->push_back(m_pRights->at(i));
 			m_pTextureArray->push_back(osg::Vec2(theR /10.0, 0));
 			std::cout << theR / 10.0 <<std::endl;
-			_pos = m_pLefts->at(i);
-			theL += (_pos - m_pLefts->at(i - 1)).length();
+
 			m_pVertexArray->push_back(m_pLefts->at(i));
 			m_pTextureArray->push_back(osg::Vec2(theL /10.0, 1));
 			std::cout << theL / 10.0 << std::endl;

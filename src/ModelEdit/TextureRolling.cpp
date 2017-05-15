@@ -3,6 +3,7 @@
 #include "Core.h"
 #include <osg/Program>
 #include <osgDB/ReadFile>
+#include "Geometry\GeometryLine.h"
 
 
 TextureRolling::TextureRolling()
@@ -21,15 +22,19 @@ TextureRolling::~TextureRolling()
 
 void TextureRolling::createStrip()
 {
+	
 	if (m_pStrip == nullptr)
 	{
 		auto _array = new osg::Vec3Array;
-		_array->push_back(osg::Vec3(0, 0, 0));
+		_array->push_back(osg::Vec3(0, 0, 0) );
 		_array->push_back(osg::Vec3(20, 0, 0));
-		//_array->push_back(osg::Vec3(5, 10, 0));
-		//_array->push_back(osg::Vec3(8, 3, 0));
+		_array->push_back(osg::Vec3(5, 10, 0));
+		_array->push_back(osg::Vec3(8, 3, 0) );
 		m_pStrip = new GeometryStrip(_array);
 		m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+
+		auto line = new GeometryLine(_array);
+		addChild(line);
 	}
 	addChild(m_pStrip);
 

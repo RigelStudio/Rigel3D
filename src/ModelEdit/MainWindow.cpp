@@ -7,6 +7,8 @@
 #include "MECore/FileUtils.h"
 #include "MECore/GraphicsView.h"
 #include <osg/DisplaySettings>
+#include <osgViewer/ViewerEventHandlers>
+#include <osgGA/StateSetManipulator>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -29,7 +31,13 @@ void MainWindow::initScene()
 void MainWindow::initSimon()
 {
 	TextureRolling* rolling = new TextureRolling;
+
 	Core::ins()->getSceneData()->addChild(rolling);
+	auto ssm = new osgGA::StateSetManipulator(Core::ins()->getCamera()->getStateSet());
+	Core::ins()->getViewer()->addEventHandler(ssm);
+
+	Core::ins()->getSceneData()->addChild(osgDB::readNodeFile(
+		FileUtils::ins()->getPath(std::string("Data/Models/axes.osgt"))));
 }
 
 void MainWindow::initKestiny()
@@ -39,7 +47,6 @@ void MainWindow::initKestiny()
 	m_pTitleWidget = Core::ins()->getGraphScene()->addWidget(m_pAppTitle);
 	m_pTitleWidget->show();
 	m_pTitleWidget->setGeometry(QRect(0, 0, this->width(), 90));
-
 	Core::ins()->getSceneData()->addChild(osgDB::readNodeFile(
 		FileUtils::ins()->getPath(std::string("Data/Models/cow.osg"))));
 }

@@ -29,8 +29,8 @@ void GraphicsView::init()
 
 	m_pViewer = new osgViewer::Viewer;
 	m_pViewer->addEventHandler(new osgViewer::StatsHandler);
-	m_pViewer->getCamera()->setNearFarRatio(0.0000002);
-	m_pViewer->getCamera()->setComputeNearFarMode(osg::CullSettings::COMPUTE_NEAR_FAR_USING_PRIMITIVES);
+	m_pViewer->getCamera()->setNearFarRatio(0.001);
+	m_pViewer->getCamera()->setComputeNearFarMode(osg::CullSettings::COMPUTE_NEAR_FAR_USING_BOUNDING_VOLUMES);
 	m_pViewer->setUpViewerAsEmbeddedInWindow(0, 0, width(), height());
 	auto* manipulator = new osgGA::TrackballManipulator;
 	m_pViewer->setCameraManipulator(manipulator);

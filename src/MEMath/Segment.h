@@ -8,7 +8,11 @@ public:
 	Segment(osg::Vec3 start, osg::Vec3 end);
 	~Segment();
 
+	//单位向量
 	osg::Vec3 dir();
+
+	//f普通向量
+	osg::Vec3 vector();
 
 	float length();
 

@@ -13,6 +13,7 @@ GeometryFloor.h
 GeometryStrip.h
 GeometryLine.h
 GeometryPolygon.h
+GeometryPipe.h
 )
 
 set(sources
@@ -23,6 +24,7 @@ GeometryFloor.cpp
 GeometryStrip.cpp
 GeometryLine.cpp
 GeometryPolygon.cpp
+GeometryPipe.cpp
 )
 
 

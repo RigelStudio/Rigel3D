@@ -18,8 +18,14 @@ osg::Vec3 Segment::dir()
 	return _dir;
 }
 
+osg::Vec3 Segment::vector()
+{
+	auto _dir = m_endPos - m_startPos;
+	return _dir;
+}
+
 float Segment::length()
 {
-	auto _dir = dir();
+	auto _dir = m_endPos - m_startPos;;
 	return _dir.length();
 }

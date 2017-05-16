@@ -44,6 +44,7 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 	posInter.x() = ((posB.x() - posA.x()) * (posD.x() - posC.x()) * (posC.y() - posA.y())
 		+ (posB.y() - posA.y()) * (posD.x() - posC.x()) * posA.x()
 		- (posD.y() - posC.y()) * (posB.x() - posA.x()) * posC.x()) / delta;
+
 	posInter.y() = -((posB.y() - posA.y()) * (posD.y() - posC.y()) * (posC.x() - posA.x())
 		+ (posB.x() - posA.x()) * (posD.y() - posC.y()) * posA.y()
 		- (posD.x() - posC.x()) * (posB.y() - posA.y()) * posC.y()) / delta;
@@ -64,15 +65,31 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 	}
 }
 
-bool MEMath::intersectLine(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::Vec3 posD, osg::Vec3& posInter)
+bool MEMath::intersectLine(osg::Vec3 pos1, osg::Vec3 pos2,
+	osg::Vec3 pos3, osg::Vec3 pos4, osg::Vec3& posInter)
 {
-	// Ax + By + C;
-	float slopeK1 = posB.y() - posA.y() / posB.x() - posA.x();
-	float Bab = posA.y() - slopeK1 * posA.x();
+	//直线方程组
+	//	Line A:
+	//	x = xa1 + (xa2 - xa1) * S
+	//	y = ya1 + (ya2 - ya1) * S
+	//	z = za1 + (za2 - za1) * S
+	//
+	//	Line B:
+	//	x = xb1 + (xb2 - xb1) * T
+	//	y = yb1 + (yb2 - yb1) * T
+	//	z = zb1 + (zb2 - zb1) * T
 
-	float slopeK2 = posD.y() - posC.y() / posD.x() - posC.x();
-	float Bcd = posC.y() - slopeK2 * posC.x();
-	return false;
+	//分子 
+	float mem = pos4.y() * (pos1.x() - pos3.x()) - pos4.x() * (pos1.y() - pos3.y());
+	//分母
+	float den = pos4.x() * (pos2.y() - pos1.y()) - pos4.y() * (pos2.x() - pos1.x());
+	if ( den == 0.0 )
+	{
+		return false;
+	}
+	float S = mem / den;
+	posInter = pos1 + (pos2 - pos1) * S;
+	return true;
 }
 
 bool MEMath::createStripBevel(float radius, osg::Vec3Array* source, osg::Vec3Array* lefts, osg::Vec3Array* rights)
@@ -228,40 +245,149 @@ bool MEMath::createStripMiter(float radius, osg::Vec3Array* source, osg::Vec3Arr
 		}
 		else
 		{
-			Segment lastVec(source->at(i - 1), source->at(i));
-			Segment nextVec(source->at(i), source->at(i + 1));
-			auto bisVec = lastVec.dir() - nextVec.dir();
-			bisVec.normalize();
-			float cosAB = lastVec.dir() * nextVec.dir() / lastVec.length() * nextVec.length();
-			float R = 0.0;
-			if (cosAB == 0.0)
+			currtPos = source->at(i);
+			lastPos = source->at(i - 1);
+			nextPos = source->at(i + 1);
+			currtVec = currtPos - lastPos;
+			nextVec = nextPos - currtPos;
+			currtVec.normalize();
+			nextVec.normalize();
+			vertlVec = currtVec ^ osg::Z_AXIS;
+			nextVerl = nextVec ^ osg::Z_AXIS;
+			osg::Vec3 A1, A2, B1, B2, C1, C2, D1, D2;
+			A1 = lastPos - vertlVec * radius;
+			A2 = currtPos - vertlVec * radius;
+			B1 = lastPos + vertlVec * radius;
+			B2 = currtPos + vertlVec * radius;
+			C1 = currtPos - nextVerl * radius;
+			C2 = nextPos - nextVerl * radius;
+			D1 = currtPos + nextVerl * radius;
+			D2 = nextPos + nextVerl * radius;
+
+			float offset = 1.0;
+			osg::Vec3 interA, interB;
+			bool isInterA = intersectSegm(A1, A2, C1, C2, interA);
+
+			bool isInterB = intersectSegm(B1, B2, D1, D2, interB);
+			if (isInterA)
 			{
-				R = radius;
+				lefts->push_back(interA);
+				auto theDir = (B2 - B1);
+				theDir.normalize();
+				B2 = B1 + theDir * (B2 - B1).length() * 2;
+				theDir = (D1 - D2);
+				theDir.normalize();
+				D1 = D2 + theDir * (D1 - D2).length() * 2;
+				osg::Vec3 interA1;
+				intersectSegm(B1, B2, D1, D2, interA1);
+				rights->push_back(interA1);
 			}
-			else
+			if (isInterB)
 			{
-				R = radius / cosAB;
+				rights->push_back(interB);
+				auto theDir = (A2 - A1);
+				theDir.normalize();
+				A2 = A1 + theDir * (A2 - A1).length() * 2;
+				theDir = (C1 - C2);
+				theDir.normalize();
+				C1 = C2 + theDir * (C1 - C2).length() * 2;
+				intersectSegm(A1, A2, C1, C2, interB);
+				lefts->push_back(interB);
 			}
-			
-			lefts->push_back(source->at(i) + bisVec * R * radius);
-			rights->push_back(source->at(i) - bisVec * R * radius);
 			continue;
 		}
 	}
 	return true;
 }
 
-osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_t parts)
+osg::Vec2Array* MEMath::clacStripTexCoord(osg::Vec3Array* source)
 {
-	
-	auto countP = vertexs->size();
-	if (countP < 3)
+	osg::Vec2Array* texCoords = new osg::Vec2Array;
+	auto count = source->size();
+	if (count < 2)
+	{
+		return texCoords;
+	}
+	float _fLength = MEMath::getLength(source);
+	float theLength = 0.0;
+	for (size_t i = 0; i < count; i++)
+	{
+		if (i == 0)
+		{
+			texCoords->push_back(osg::Vec2(0, 0));
+			texCoords->push_back(osg::Vec2(0, 1));
+		}
+		else if ( i == count - 1)
+		{
+			texCoords->push_back(osg::Vec2(_fLength/10, 0));
+			texCoords->push_back(osg::Vec2(_fLength/10, 1));
+		}
+		else
+		{
+			Segment seg(source->at(i - 1), source->at(i));
+			float _length = seg.length();
+			theLength += _length;
+			texCoords->push_back(osg::Vec2(theLength/10, 0));
+			texCoords->push_back(osg::Vec2(theLength/10, 1));
+		}
+	}
+	return texCoords;
+}
+
+osg::Vec3Array* MEMath::createPipe(osg::Vec3Array* source, float radius)
+{
+	osg::Vec3Array* vertex = new osg::Vec3Array;
+	auto count = source->size();
+	if (count < 2)
 	{
 		return nullptr;
 	}
+	if (count < 3)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			size_t parts = radius * 10;
+			const float angleDelta = 2.0f*osg::PI / radius * 10;
+			float angle = 0.0f;
+			for (size_t j = 0; j < parts; ++j, angle += angleDelta)
+			{
+				float c = cosf(angle);
+				float s = sinf(angle);
+				vertex->push_back(source->at(i) + osg::Vec3(c*radius, s*radius, 0.0f));
+			}
+		}
+	}
+	else
+	{
+		source = BezierCurve(source, 1.0, 10);
+		count = source->size();
+ 		for (int i = 0; i < count; i++)
+ 		{
+ 			size_t parts = radius * 10;
+ 			const float angleDelta = 2.0f*osg::PI / radius * 10;
+ 			float angle = 0.0f;
+ 			for (size_t j = 0; j < parts; ++j, angle += angleDelta)
+ 			{
+ 				float c = cosf(angle);
+ 				float s = sinf(angle);
+ 				vertex->push_back(source->at(j) + osg::Vec3(c*radius, s*radius, 0.0f));
+ 			}
+ 		}
+	}
+	return vertex;
+}
+
+osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_t parts)
+{
 	auto controlPoints = new osg::Vec3Array;
 	auto resultCurve = new osg::Vec3Array;
-	
+
+	auto countP = vertexs->size();
+	if (countP < 3)
+	{
+		resultCurve = vertexs;
+		return resultCurve;
+	}
 	//	P0
 	//	|
 	//	|
@@ -278,16 +404,26 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 		float pp0Scale = radius/length;
 		if (i == 1)
 		{
-			controlPoints->push_back(segPP0.dir() * (1 - pp0Scale) + vertexs->at(i - 1));
+			controlPoints->push_back(segPP0.vector() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
 		else if (i == countP - 1)
 		{
-			controlPoints->push_back(segPP0.dir() * (pp0Scale) + vertexs->at(i - 1));
+			if (pp0Scale >= radius)
+			{
+				controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
+				continue;
+			}
+			controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
 		}
 		else
 		{
-			controlPoints->push_back(segPP0.dir() * pp0Scale + vertexs->at(i - 1));
-			controlPoints->push_back(segPP0.dir() * (1 - pp0Scale) + vertexs->at(i - 1));
+			controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
+			if (pp0Scale >= radius)
+			{
+				controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
+				continue;
+			}
+			controlPoints->push_back(segPP0.vector() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
 	}
 	auto currPos = osg::Vec3();

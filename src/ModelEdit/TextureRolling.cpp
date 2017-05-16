@@ -1,10 +1,11 @@
 #include "TextureRolling.h"
-#include "MECore\FileUtils.h"
+#include "MECore/FileUtils.h"
 #include "Core.h"
 #include <osg/Program>
 #include <osgDB/ReadFile>
-#include "Geometry\GeometryLine.h"
+#include "Geometry/GeometryLine.h"
 #include <osg/MatrixTransform>
+#include "Geometry/GeometryPipe.h"
 
 TextureRolling::TextureRolling()
 {
@@ -31,10 +32,17 @@ void TextureRolling::createStrip()
 		_array->push_back(osg::Vec3(20, 20, 0));
 		_array->push_back(osg::Vec3(10, 10, 0) );
 		_array->push_back(osg::Vec3(5, 30, 0));
-		m_pStrip = new GeometryStrip(_array);
-		m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
-		mtNode->addChild(m_pStrip);
-		mtNode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::X_AXIS));
+		_array->push_back(osg::Vec3(50, 60, 0));
+		//_array->push_back(osg::Vec3(100, 200, 0));
+
+ 		m_pStrip = new GeometryStrip(_array);
+ 		m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+ 		mtNode->addChild(m_pStrip);
+ 		mtNode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::X_AXIS));
+
+		//auto pipe = new GeometryPipe(_array);
+		//pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+		//addChild(pipe);
 	}
 	addChild(mtNode);
 

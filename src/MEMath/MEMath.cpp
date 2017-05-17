@@ -70,26 +70,50 @@ bool MEMath::intersectLine(osg::Vec3 pos1, osg::Vec3 pos2,
 {
 	//直线方程组
 	//	Line A:
-	//	x = xa1 + (xa2 - xa1) * S
-	//	y = ya1 + (ya2 - ya1) * S
-	//	z = za1 + (za2 - za1) * S
+	//	x = P1x + (P2x - P1x) * S 
+	//	y = P1y + (P2y - P1y) * S
+	//	z = P1z + (P2z - P2z) * S
 	//
 	//	Line B:
-	//	x = xb1 + (xb2 - xb1) * T
-	//	y = yb1 + (yb2 - yb1) * T
-	//	z = zb1 + (zb2 - zb1) * T
+	//	x = P3x + (P4x - P3x) * T
+	//	y = P3y + (P4y - P3y) * T
+	//	z = P3z + (P4z - P3z) * T
 
-	//分子 
-	float mem = pos4.y() * (pos1.x() - pos3.x()) - pos4.x() * (pos1.y() - pos3.y());
-	//分母
-	float den = pos4.x() * (pos2.y() - pos1.y()) - pos4.y() * (pos2.x() - pos1.x());
-	if ( den == 0.0 )
+	//T = (P13y*P43x - P43y*P13x) / (P43y*P21x - P43x*P21y)
+	//两直线已经相交
+	if (pos1 == pos3 || pos1 == pos4)
 	{
+		posInter = pos1;
+		return true;
+	}
+	if (pos2 == pos3 || pos2 == pos3)
+	{
+		posInter = pos2;
+		return true;
+	}
+	
+	float P13x = pos1.x() - pos3.x();
+	float P13y = pos1.y() - pos3.y();
+
+	float P43x = pos4.x() - pos3.x();
+	float P43y = pos4.y() - pos3.y();
+
+	float P21x = pos2.x() - pos1.x();
+	float P21y = pos2.y() - pos1.y();
+	
+	float mem = P43x*P13y - P43y*P13x;//分子
+	float den = P43y*P21x - P43x*P21y;//分母
+	if (den == 0.0)
+	{
+
 		return false;
 	}
-	float S = mem / den;
-	posInter = pos1 + (pos2 - pos1) * S;
-	return true;
+	else
+	{
+		float T = mem / den;
+		posInter = pos1 + (pos2 - pos1)*T;
+		return true;
+	}
 }
 
 bool MEMath::createStripBevel(float radius, osg::Vec3Array* source, osg::Vec3Array* lefts, osg::Vec3Array* rights)
@@ -266,32 +290,19 @@ bool MEMath::createStripMiter(float radius, osg::Vec3Array* source, osg::Vec3Arr
 
 			float offset = 1.0;
 			osg::Vec3 interA, interB;
-			bool isInterA = intersectSegm(A1, A2, C1, C2, interA);
+			bool isInterA = intersectLine(A1, A2, C1, C2, interA);
 
-			bool isInterB = intersectSegm(B1, B2, D1, D2, interB);
+			bool isInterB = intersectLine(B1, B2, D1, D2, interB);
 			if (isInterA)
 			{
 				lefts->push_back(interA);
-				auto theDir = (B2 - B1);
-				theDir.normalize();
-				B2 = B1 + theDir * (B2 - B1).length() * 2;
-				theDir = (D1 - D2);
-				theDir.normalize();
-				D1 = D2 + theDir * (D1 - D2).length() * 2;
-				osg::Vec3 interA1;
-				intersectSegm(B1, B2, D1, D2, interA1);
-				rights->push_back(interA1);
+				bool isinter = intersectLine(B1, B2, D1, D2, interA);
+				rights->push_back(interA);
 			}
 			if (isInterB)
 			{
 				rights->push_back(interB);
-				auto theDir = (A2 - A1);
-				theDir.normalize();
-				A2 = A1 + theDir * (A2 - A1).length() * 2;
-				theDir = (C1 - C2);
-				theDir.normalize();
-				C1 = C2 + theDir * (C1 - C2).length() * 2;
-				intersectSegm(A1, A2, C1, C2, interB);
+				bool isinter = intersectLine(A1, A2, C1, C2, interB);
 				lefts->push_back(interB);
 			}
 			continue;

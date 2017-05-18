@@ -39,6 +39,8 @@ public:
 	//贝塞尔曲线插值， 参数1：插值的数组，参数2：插值半径, 参数3：细分多少段
 	static osg::Vec3Array* BezierCurve(osg::Vec3Array* vertexs, float radius, size_t parts);
 
+	//创建一个圆周的数组， 参数1：圆心坐标， 参数2：半径，参数3：圆周分段数
+	static osg::Vec3Array* createCircle(osg::Vec3 center, float radius, osg::Vec3 upDir, size_t parts = 10);
 };
 
 #endif//MEMATH_H

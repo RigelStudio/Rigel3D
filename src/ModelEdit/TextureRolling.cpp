@@ -27,25 +27,25 @@ void TextureRolling::createStrip()
 	if (m_pStrip == nullptr)
 	{
 		auto _array = new osg::Vec3Array;
- 		//_array->push_back(osg::Vec3(0, 0, 0) );
- 		_array->push_back(osg::Vec3(20, 0, 0));
- 		_array->push_back(osg::Vec3(10, 20, 0));
-		_array->push_back(osg::Vec3(10, 10, 0) );
-		_array->push_back(osg::Vec3(5, 30, 0));
-		//_array->push_back(osg::Vec3(5, 30, 30));
-		//_array->push_back(osg::Vec3(20, 15, 30));
-		//_array->push_back(osg::Vec3(35, 30, 30));
+ 		_array->push_back(osg::Vec3(0, 0, 0) );
+ 		_array->push_back(osg::Vec3(0, 0, 20));
+  		_array->push_back(osg::Vec3(20, 0, 20));
+ // 		_array->push_back(osg::Vec3(10, 10, 0) );
+//  		_array->push_back(osg::Vec3(15, 30, 0));
+//  		_array->push_back(osg::Vec3(5, 30, 30));
+//  		_array->push_back(osg::Vec3(20, 15, 30));
+//  		_array->push_back(osg::Vec3(35, 30, 30));
 
- 		m_pStrip = new GeometryStrip(_array);
- 		m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
- 		mtNode->addChild(m_pStrip);
- 		mtNode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::X_AXIS));
+ 		//m_pStrip = new GeometryStrip(_array);
+ 		//m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+ 		//mtNode->addChild(m_pStrip);
+ 		//mtNode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::X_AXIS));
 
-		//auto pipe = new GeometryPipe(_array);
-		//pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
-		//addChild(pipe);
+		auto pipe = new GeometryPipe(_array);
+		pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+		addChild(pipe);
 	}
-	addChild(m_pStrip);
+	//addChild(m_pStrip);
 
 	createShader();
 }

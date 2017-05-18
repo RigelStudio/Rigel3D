@@ -289,22 +289,11 @@ bool MEMath::createStripMiter(float radius, osg::Vec3Array* source, osg::Vec3Arr
 			D2 = nextPos + nextVerl * radius;
 
 			float offset = 1.0;
-			osg::Vec3 interA, interB;
-			bool isInterA = intersectLine(A1, A2, C1, C2, interA);
-
-			bool isInterB = intersectLine(B1, B2, D1, D2, interB);
-			if (isInterA)
-			{
-				lefts->push_back(interA);
-				bool isinter = intersectLine(B1, B2, D1, D2, interA);
-				rights->push_back(interA);
-			}
-			if (isInterB)
-			{
-				rights->push_back(interB);
-				bool isinter = intersectLine(A1, A2, C1, C2, interB);
-				lefts->push_back(interB);
-			}
+			osg::Vec3 intersect;
+			intersectLine(A1, A2, C1, C2, intersect);
+			lefts->push_back(intersect);
+			intersectLine(B1, B2, D1, D2, intersect);
+			rights->push_back(intersect);
 			continue;
 		}
 	}
@@ -475,4 +464,22 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 		}
 	}
 	return resultCurve;
+}
+
+osg::Vec3Array* MEMath::createCircle(osg::Vec3 center, float radius, osg::Vec3 upDir, size_t parts /*= 10*/)
+{
+	osg::ref_ptr<osg::Vec3Array> points = new osg::Vec3Array;
+	const float angleDelta = 2.0f*osg::PI / parts;
+	float angle = 0.0f;
+	for (size_t j = 0; j < parts; ++j, angle += angleDelta)
+	{
+		float _x = cosf(angle);
+		float _y = sinf(angle);
+		osg::Vec3 pos = center + osg::Vec3(_x*radius, _y*radius, 0.0f);
+		osg::Matrix matrix;
+		matrix.makeRotate(osg::Z_AXIS, upDir);
+		pos = pos * matrix;
+		points->push_back(pos);
+	}
+	return points.release();
 }

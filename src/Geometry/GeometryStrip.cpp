@@ -72,7 +72,7 @@ void GeometryStrip::createStrip()
   	m_pVertexArray->clear();
   	m_pTextureArray->clear();
   	m_pNormalArray->clear();
-	//m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 10);
+	m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 10);
 	m_pTextureArray = MEMath::clacStripTexCoord(m_pSouceArray);
  	MEMath::createStripMiter(m_numWidth, m_pSouceArray, m_pLefts, m_pRights);
 	

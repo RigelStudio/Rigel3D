@@ -451,12 +451,8 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 		}
 		else
 		{
+			
 			controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
-			if (pp0Scale >= radius)
-			{
-				controlPoints->push_back(segPP0.vector() * pp0Scale + vertexs->at(i - 1));
-				continue;
-			}
 			controlPoints->push_back(segPP0.vector() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
 	}
@@ -477,7 +473,7 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 			//	|
 			//	↓-----------→ P1
 			//	P
-			// B(t) = (1-t)²*P0 + 2t*(1-t)P + t²*P1, t = [0, 1]
+			// B(t) = (1-t)²*P0 + 2t*(1-t)P + t²*P1, t = [0, 1]			
 			osg::Vec3 P0, P, P1;
 			P0 = controlPoints->at(j);
 			P = vertexs->at(i);
@@ -492,6 +488,7 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 				pos = P0*pow(flag, 2) + P * 2*t*flag + P1*pow(t, 2);
  				resultCurve->push_back(pos);
  			}
+			j += 2;
 		}
 	}
 	return resultCurve;

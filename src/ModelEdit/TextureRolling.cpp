@@ -30,7 +30,7 @@ void TextureRolling::createStrip()
  		_array->push_back(osg::Vec3(0, 0, 0) );
  		_array->push_back(osg::Vec3(0, 0, 50));
   		_array->push_back(osg::Vec3(50, 0, 50));
- 		_array->push_back(osg::Vec3(10, 10, 0));
+  		_array->push_back(osg::Vec3(50, 50, 50));
  		_array->push_back(osg::Vec3(15, 30, 0));
  		_array->push_back(osg::Vec3(5, 30, 30));
  		_array->push_back(osg::Vec3(20, 15, 30));

@@ -43,6 +43,9 @@ void GeometryPipe::updateGeomtry()
 	float size = this->getNumPrimitiveSets();
 	removePrimitiveSet(0, size);
 	createPipe();
+	//auto iter = m_pVertexArray->end();
+	//m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, 5, 10);
+	//m_pVertexArray->insert(iter, m_pSouceArray->begin(), m_pSouceArray->end());
 	setTexCoordArray(0, m_pTextureArray);
 	addPrimitiveSet(new osg::DrawArrays(
 		osg::PrimitiveSet::TRIANGLE_STRIP, 0, m_pVertexArray->size()));
@@ -51,7 +54,7 @@ void GeometryPipe::updateGeomtry()
 
 void GeometryPipe::createPipe()
 {
-	m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 5);
+	m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 20);
 	auto points = new osg::Vec3Array;
 	int parts = 10;
 	osg::ref_ptr<osg::Vec3Array> circle = nullptr;
@@ -76,7 +79,7 @@ void GeometryPipe::createPipe()
 			dir = lastDir + nextDir;
 		}
 		dir.normalize();
-		circle = MEMath::createCircle(m_pSouceArray->at(i), 0.2, dir, parts);
+		circle = MEMath::createCircle(m_pSouceArray->at(i), 5, dir, parts);
 		size_t part = circle->size();
 		auto iter = points->end();
 		points->insert(iter, circle->begin(), circle->end());

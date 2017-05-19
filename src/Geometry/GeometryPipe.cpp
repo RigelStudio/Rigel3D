@@ -45,49 +45,109 @@ void GeometryPipe::updateGeomtry()
 	createPipe();
 	setTexCoordArray(0, m_pTextureArray);
 	addPrimitiveSet(new osg::DrawArrays(
-		osg::PrimitiveSet::TRIANGLE_FAN, 0, m_pVertexArray->size()));
+		osg::PrimitiveSet::TRIANGLE_STRIP, 0, m_pVertexArray->size()));
 	m_pVertexArray->dirty();
 }
 
 void GeometryPipe::createPipe()
 {
-	size_t cout = m_pSouceArray->size();
+	m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 5);
 	auto points = new osg::Vec3Array;
-	int parts = 3;
+	int parts = 10;
 	osg::ref_ptr<osg::Vec3Array> circle = nullptr;
+	osg::Vec3 lastDir, nextDir;
+
+	size_t cout = m_pSouceArray->size();
 	for (int i = 0; i < cout; i++)
 	{
 		osg::Vec3 dir = osg::Z_AXIS;
-		if (i == cout - 1)
+		if (i == 0)
+		{
+			dir = m_pSouceArray->at(i + 1) - m_pSouceArray->at(i);
+		}
+		else if (i == cout - 1)
 		{
 			dir = m_pSouceArray->at(i) - m_pSouceArray->at(i - 1);
 		}
 		else
 		{
-			dir = m_pSouceArray->at(i + 1) - m_pSouceArray->at(i);
+			lastDir = m_pSouceArray->at(i) - m_pSouceArray->at(i - 1);
+			nextDir = m_pSouceArray->at(i + 1) - m_pSouceArray->at(i);
+			dir = lastDir + nextDir;
 		}
 		dir.normalize();
-		circle = MEMath::createCircle(m_pSouceArray->at(i), 5, dir, parts);
+		circle = MEMath::createCircle(m_pSouceArray->at(i), 0.2, dir, parts);
 		size_t part = circle->size();
 		auto iter = points->end();
 		points->insert(iter, circle->begin(), circle->end());
-		//circle.release();
+		circle.release();
 	}
- 	//cout = points->size();
- 	for (size_t i = 0; i < parts; i ++)
- 	{
-		for (size_t j = 0; j < cout; j ++)
+
+	//外层循环控制拐点的遍历
+	for (size_t i = 0; i < cout; i++)
+	{
+		//内层循环圆周的遍历
+		if (i == 0)
 		{
-			size_t index = i + j*parts;
-			m_pVertexArray->push_back(points->at(index));
-		}
-		if (i == parts - 1)
-		{
-			for (size_t j = 0; j < cout; j++)
+			for (size_t j = 0; j <= parts; j++)
 			{
-				size_t index = j*parts;
+				size_t index = -1;
+				if (j == parts)
+				{
+					index = i*parts;
+					m_pVertexArray->push_back(points->at(index));
+					index = (i + 1) * parts;
+					m_pVertexArray->push_back(points->at(index));
+					m_pVertexArray->push_back(points->at(index));
+					continue;
+				}
+				index = i*parts + j;
+				m_pVertexArray->push_back(points->at(index));
+				index = (i + 1) * parts + j;
 				m_pVertexArray->push_back(points->at(index));
 			}
 		}
- 	}
+		else if (i == cout - 1)
+		{
+			for (size_t j = 0; j <= parts; j++)
+			{
+				size_t index = -1;
+				if (j == parts)
+				{
+					index = (i - 1) * parts;
+					m_pVertexArray->push_back(points->at(index));
+					index = i*parts;
+					m_pVertexArray->push_back(points->at(index));
+					continue;
+				}
+				index = (i - 1) * parts + j;
+				m_pVertexArray->push_back(points->at(index));
+				index = i*parts + j;
+				m_pVertexArray->push_back(points->at(index));
+			}
+		}
+		else
+		{
+			for (size_t j = 0; j <= parts; j++)
+			{
+				size_t index = -1;
+				if (j == parts)
+				{
+					index = i*parts;
+					m_pVertexArray->push_back(points->at(index));
+					index = (i + 1) * parts;
+					m_pVertexArray->push_back(points->at(index));
+					continue;
+				}
+				index = i*parts + j;
+				m_pVertexArray->push_back(points->at(index));
+				m_pVertexArray->push_back(points->at(index));
+				index = (i + 1) * parts + j;
+				m_pVertexArray->push_back(points->at(index));
+			}
+		}
+
+	}
+
+	m_pTextureArray = MEMath::calcPipeTexCoord(m_pSouceArray, parts);
  }

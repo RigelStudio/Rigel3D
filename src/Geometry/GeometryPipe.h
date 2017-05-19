@@ -18,6 +18,9 @@ private:
 	
 	void createPipe();
 
+
+private:
+	osg::ref_ptr<osg::UIntArray> m_pIndexs;
 };
 
 #endif//GEOMETRYPIPE_H

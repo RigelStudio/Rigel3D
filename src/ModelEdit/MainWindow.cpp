@@ -37,7 +37,7 @@ void MainWindow::initSimon()
 	Core::ins()->getViewer()->addEventHandler(ssm);
 
 // 	Core::ins()->getSceneData()->addChild(osgDB::readNodeFile(
-// 		FileUtils::ins()->getPath(std::string("Data/Models/cow.osg"))));
+// 		FileUtils::ins()->getPath(std::string("Data/Models/pipe.osg"))));
 }
 
 void MainWindow::initKestiny()

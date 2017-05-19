@@ -1,4 +1,4 @@
-#include "MEMath.h"
+ï»¿#include "MEMath.h"
 #include <math.h>
 
 
@@ -40,7 +40,7 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 		return false;
 	}
 
-	// Ïß¶ÎËùÔÚÖ±ÏßµÄ½»µã×ø±ê (x , y)      
+	// çº¿æ®µæ‰€åœ¨ç›´çº¿çš„äº¤ç‚¹åæ ‡ (x , y)      
 	posInter.x() = ((posB.x() - posA.x()) * (posD.x() - posC.x()) * (posC.y() - posA.y())
 		+ (posB.y() - posA.y()) * (posD.x() - posC.x()) * posA.x()
 		- (posD.y() - posC.y()) * (posB.x() - posA.x()) * posC.x()) / delta;
@@ -50,10 +50,10 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 		- (posD.x() - posC.x()) * (posB.y() - posA.y()) * posC.y()) / delta;
 
 	if (
-		// ½»µãÔÚÏß¶Î1ÉÏ  
+		// äº¤ç‚¹åœ¨çº¿æ®µ1ä¸Š  
 		(posInter.x() - posA.x()) * (posInter.x() - posB.x()) <= 0
 		&& (posInter.y() - posA.y()) * (posInter.y() - posB.y()) <= 0
-		// ÇÒ½»µãÒ²ÔÚÏß¶Î2ÉÏ  
+		// ä¸”äº¤ç‚¹ä¹Ÿåœ¨çº¿æ®µ2ä¸Š  
 		&& (posInter.x() - posC.x()) * (posInter.x() - posD.x()) <= 0
 		&& (posInter.y() - posC.y()) * (posInter.y() - posD.y()) <= 0)
 	{
@@ -68,7 +68,7 @@ bool MEMath::intersectSegm(osg::Vec3 posA, osg::Vec3 posB, osg::Vec3 posC, osg::
 bool MEMath::intersectLine(osg::Vec3 pos1, osg::Vec3 pos2,
 	osg::Vec3 pos3, osg::Vec3 pos4, osg::Vec3& posInter)
 {
-	//Ö±Ïß·½³Ì×é
+	//ç›´çº¿æ–¹ç¨‹ç»„
 	//	Line A:
 	//	x = P1x + (P2x - P1x) * S 
 	//	y = P1y + (P2y - P1y) * S
@@ -80,7 +80,7 @@ bool MEMath::intersectLine(osg::Vec3 pos1, osg::Vec3 pos2,
 	//	z = P3z + (P4z - P3z) * T
 
 	//T = (P13y*P43x - P43y*P13x) / (P43y*P21x - P43x*P21y)
-	//Á½Ö±ÏßÒÑ¾­Ïà½»
+	//ä¸¤ç›´çº¿å·²ç»ç›¸äº¤
 	if (pos1 == pos3 || pos1 == pos4)
 	{
 		posInter = pos1;
@@ -101,8 +101,8 @@ bool MEMath::intersectLine(osg::Vec3 pos1, osg::Vec3 pos2,
 	float P21x = pos2.x() - pos1.x();
 	float P21y = pos2.y() - pos1.y();
 	
-	float mem = P43x*P13y - P43y*P13x;//·Ö×Ó
-	float den = P43y*P21x - P43x*P21y;//·ÖÄ¸
+	float mem = P43x*P13y - P43y*P13x;//åˆ†å­
+	float den = P43y*P21x - P43x*P21y;//åˆ†æ¯
 	if (den == 0.0)
 	{
 
@@ -300,7 +300,7 @@ bool MEMath::createStripMiter(float radius, osg::Vec3Array* source, osg::Vec3Arr
 	return true;
 }
 
-osg::Vec2Array* MEMath::clacStripTexCoord(osg::Vec3Array* source)
+osg::Vec2Array* MEMath::calcStripTexCoord(osg::Vec3Array* source)
 {
 	osg::Vec2Array* texCoords = new osg::Vec2Array;
 	auto count = source->size();
@@ -329,6 +329,47 @@ osg::Vec2Array* MEMath::clacStripTexCoord(osg::Vec3Array* source)
 			theLength += _length;
 			texCoords->push_back(osg::Vec2(theLength/10, 0));
 			texCoords->push_back(osg::Vec2(theLength/10, 1));
+		}
+	}
+	return texCoords;
+}
+
+osg::Vec2Array* MEMath::calcPipeTexCoord(osg::Vec3Array* source, size_t parts)
+{
+	osg::Vec2Array* texCoords = new osg::Vec2Array;
+	auto count = source->size();
+	if (count < 2)
+	{
+		return texCoords;
+	}
+	float _fLength = MEMath::getLength(source);
+	float theLength = 0.0;
+	for (size_t i = 0; i < count; i++)
+	{
+		if (i == 0)
+		{
+			for (int j = 0; j <= parts; j++)
+			{
+				texCoords->push_back(osg::Vec2(0, j/parts));
+			}
+		}
+		else if (i == count - 1)
+		{
+			for (int j = 0; j <= parts; j++)
+			{
+				texCoords->push_back(osg::Vec2(_fLength / 10, j / parts));
+			}
+		}
+		else
+		{
+
+			Segment seg(source->at(i - 1), source->at(i));
+			float _length = seg.length();
+			theLength += _length;
+			for (int j = 0; j <= parts; j++)
+			{
+				texCoords->push_back(osg::Vec2(theLength / 10, j / parts));
+			}
 		}
 	}
 	return texCoords;
@@ -388,15 +429,8 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 		resultCurve = vertexs;
 		return resultCurve;
 	}
-	//	P0
-	//	|
-	//	|
-	//	|
-	//	¡ı-----------¡ú P1
-	//	P
-	//
-	//¼ÆËã¿ØÖÆµã
 	
+	//è®¡ç®—æ§åˆ¶ç‚¹
 	for (int i = 1; i < countP; i++)
 	{
 		Segment segPP0(vertexs->at(i - 1), vertexs->at(i));
@@ -426,41 +460,38 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 			controlPoints->push_back(segPP0.vector() * (1 - pp0Scale) + vertexs->at(i - 1));
 		}
 	}
-	auto currPos = osg::Vec3();
-	//½øĞĞ²åÖµ
+	
+	//è¿›è¡Œæ’å€¼
 	for (int i = 0, j = 0; i < countP; i ++)
 	{
-		//µÚÒ»¸öµãºÍ×îºóÒ»¸öµã¶¼Ö±½ÓÌí¼Ó²»²åÖµ
+		//ç¬¬ä¸€ä¸ªç‚¹å’Œæœ€åä¸€ä¸ªç‚¹éƒ½ç›´æ¥æ·»åŠ ä¸æ’å€¼
 		if (i == 0 || i == countP - 1)
 		{
 			resultCurve->push_back(vertexs->at(i));
 		}
 		else
 		{
-			double A1, B1, C1, A2, B2, C2, A3, B3, C3;
-			currPos = vertexs->at(i);
+			//	P0
+			//	|
+			//	|
+			//	|
+			//	â†“-----------â†’ P1
+			//	P
+			// B(t) = (1-t)Â²*P0 + 2t*(1-t)P + tÂ²*P1, t = [0, 1]
+			osg::Vec3 P0, P, P1;
+			P0 = controlPoints->at(j);
+			P = vertexs->at(i);
+			P1 = controlPoints->at(j + 1);
 
-			A1 = (*controlPoints)[j].x();
-			A2 = (currPos.x() - (*controlPoints)[j].x()) * 2;
-			A3 = (*controlPoints)[j + 1].x() - 2 * currPos.x() + (*controlPoints)[j].x();
-
-			B1 = (*controlPoints)[j].y();
-			B2 = (currPos.y() - (*controlPoints)[j].y()) * 2;
-			B3 = (*controlPoints)[j + 1].y() - 2 * currPos.y() + (*controlPoints)[j].y();
-
-			C1 = (*controlPoints)[j].z();
-			C2 = (currPos.z() - (*controlPoints)[j].z()) * 2;
-			C3 = (*controlPoints)[j + 1].z() - 2 * currPos.z() + (*controlPoints)[j].z();
-			j += 2;
-			auto delta = 1.0 / parts;
-			for (int n = 0; n < parts; n++)
-			{
-				auto t = n * delta;
-				resultCurve->push_back(osg::Vec3(
-					(A1 + A2*t + A3*t*t),
-					(B1 + B2*t + B3*t*t),
-					(C1 + C2*t + C3*t*t)));
-			}
+ 			auto delta = 1.0 / parts;
+ 			for (int n = 0; n <= parts; n++)
+ 			{
+ 				auto t = n * delta;
+				float flag = 1 - t;
+				osg::Vec3 pos;
+				pos = P0*pow(flag, 2) + P * 2*t*flag + P1*pow(t, 2);
+ 				resultCurve->push_back(pos);
+ 			}
 		}
 	}
 	return resultCurve;
@@ -475,10 +506,11 @@ osg::Vec3Array* MEMath::createCircle(osg::Vec3 center, float radius, osg::Vec3 u
 	{
 		float _x = cosf(angle);
 		float _y = sinf(angle);
-		osg::Vec3 pos = center + osg::Vec3(_x*radius, _y*radius, 0.0f);
 		osg::Matrix matrix;
 		matrix.makeRotate(osg::Z_AXIS, upDir);
+		osg::Vec3 pos = osg::Vec3(_x*radius, _y*radius, 0.0f);
 		pos = pos * matrix;
+		pos += center;
 		points->push_back(pos);
 	}
 	return points.release();

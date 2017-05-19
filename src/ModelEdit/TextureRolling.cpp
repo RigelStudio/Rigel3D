@@ -28,13 +28,13 @@ void TextureRolling::createStrip()
 	{
 		auto _array = new osg::Vec3Array;
  		_array->push_back(osg::Vec3(0, 0, 0) );
- 		_array->push_back(osg::Vec3(0, 0, 20));
-  		_array->push_back(osg::Vec3(20, 0, 20));
- // 		_array->push_back(osg::Vec3(10, 10, 0) );
-//  		_array->push_back(osg::Vec3(15, 30, 0));
-//  		_array->push_back(osg::Vec3(5, 30, 30));
-//  		_array->push_back(osg::Vec3(20, 15, 30));
-//  		_array->push_back(osg::Vec3(35, 30, 30));
+ 		_array->push_back(osg::Vec3(0, 0, 50));
+  		_array->push_back(osg::Vec3(50, 0, 50));
+ 		_array->push_back(osg::Vec3(10, 10, 0));
+ 		_array->push_back(osg::Vec3(15, 30, 0));
+ 		_array->push_back(osg::Vec3(5, 30, 30));
+ 		_array->push_back(osg::Vec3(20, 15, 30));
+ 		_array->push_back(osg::Vec3(35, 30, 30));
 
  		//m_pStrip = new GeometryStrip(_array);
  		//m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));

@@ -31,7 +31,11 @@ public:
 	static bool createStripMiter(float radius, osg::Vec3Array* source,
 		osg::Vec3Array* lefts, osg::Vec3Array* rights);
 
-	static osg::Vec2Array* clacStripTexCoord(osg::Vec3Array* source);
+	//计算面带纹理坐标
+	static osg::Vec2Array* calcStripTexCoord(osg::Vec3Array* source);
+
+	//计算管线纹理坐标
+	static osg::Vec2Array* calcPipeTexCoord(osg::Vec3Array* source, size_t parts);
 
 	//管线
 	static osg::Vec3Array* createPipe(osg::Vec3Array* source, float radius);

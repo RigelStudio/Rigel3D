@@ -78,9 +78,8 @@ void GeometryBase::init()
 	m_pSouceArray = new osg::Vec3Array;
 	setVertexArray(m_pVertexArray);
 	setColorArray(m_pColorArray);
-	setNormalArray(m_pNormalArray);
-	setTexCoordArray(0, m_pTextureArray);
-	setNormalBinding(Geometry::BIND_OVERALL);
+	setNormalArray(m_pNormalArray, osg::Array::BIND_OVERALL);
+	setTexCoordArray(0, m_pTextureArray, osg::Array::BIND_PER_VERTEX);
 	setUseVertexBufferObjects(true);
 	setUseDisplayList(false);
 }

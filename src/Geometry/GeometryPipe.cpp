@@ -7,6 +7,7 @@ GeometryPipe::GeometryPipe()
 {
 	setName("GeometryPipe");
 	setDataVariance(Object::DYNAMIC);
+	m_numParts = 18;
 }
 
 
@@ -14,6 +15,7 @@ GeometryPipe::GeometryPipe(osg::Vec3Array* points)
 {
 	setName("GeometryPipe");
 	setDataVariance(Object::DYNAMIC);
+	m_numParts = 4;
 	m_pSouceArray = points;
 	updateGeomtry();
 }
@@ -25,7 +27,6 @@ GeometryPipe::~GeometryPipe()
 void GeometryPipe::updateStyle()
 {
 	m_pColorArray->push_back(m_color);
-	setWidth(2);
 	setColorBinding(Geometry::BIND_OVERALL);
 	m_pStateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF |
 		osg::StateAttribute::PROTECTED);
@@ -43,9 +44,6 @@ void GeometryPipe::updateGeomtry()
 	float size = this->getNumPrimitiveSets();
 	removePrimitiveSet(0, size);
 	createPipe();
-	//auto iter = m_pVertexArray->end();
-	//m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, 5, 10);
-	//m_pVertexArray->insert(iter, m_pSouceArray->begin(), m_pSouceArray->end());
 	setTexCoordArray(0, m_pTextureArray);
 	addPrimitiveSet(new osg::DrawArrays(
 		osg::PrimitiveSet::TRIANGLE_STRIP, 0, m_pVertexArray->size()));
@@ -54,103 +52,132 @@ void GeometryPipe::updateGeomtry()
 
 void GeometryPipe::createPipe()
 {
-	m_pSouceArray = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 20);
-	auto points = new osg::Vec3Array;
-	int parts = 10;
+	auto curve = new osg::Vec3Array;
+	curve = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 20, 1);
+	auto count = curve->size();
+	interpolationCicle(curve);
+	clacIndex(count);
+	m_pTextureArray = MEMath::calcPipeTexCoord(curve, m_numParts);
+ }
+
+void GeometryPipe::interpolationCicle(const osg::Vec3Array* curve)
+{
+	m_pSouceArray->clear();
 	osg::ref_ptr<osg::Vec3Array> circle = nullptr;
 	osg::Vec3 lastDir, nextDir;
 
-	size_t cout = m_pSouceArray->size();
+	size_t cout = curve->size();
 	for (int i = 0; i < cout; i++)
 	{
 		osg::Vec3 dir = osg::Z_AXIS;
 		if (i == 0)
 		{
-			dir = m_pSouceArray->at(i + 1) - m_pSouceArray->at(i);
+			dir = curve->at(i + 1) - curve->at(i);
 		}
 		else if (i == cout - 1)
 		{
-			dir = m_pSouceArray->at(i) - m_pSouceArray->at(i - 1);
+			dir = curve->at(i) - curve->at(i - 1);
 		}
 		else
 		{
-			lastDir = m_pSouceArray->at(i) - m_pSouceArray->at(i - 1);
-			nextDir = m_pSouceArray->at(i + 1) - m_pSouceArray->at(i);
+			lastDir = curve->at(i) - curve->at(i - 1);
+			nextDir = curve->at(i + 1) - curve->at(i);
 			dir = lastDir + nextDir;
 		}
 		dir.normalize();
-		circle = MEMath::createCircle(m_pSouceArray->at(i), 5, dir, parts);
-		size_t part = circle->size();
-		auto iter = points->end();
-		points->insert(iter, circle->begin(), circle->end());
+		circle = MEMath::createCircle(curve->at(i), 5, dir, m_numParts);
+		auto iter = m_pSouceArray->end();
+		m_pSouceArray->insert(iter, circle->begin(), circle->end());
 		circle.release();
 	}
+}
 
+void GeometryPipe::clacIndex(int count)
+{
 	//外层循环控制拐点的遍历
-	for (size_t i = 0; i < cout; i++)
+	for (size_t i = 0; i < m_numParts; i++)
 	{
-		//内层循环圆周的遍历
-		if (i == 0)
+		bool mod = i % 2; //判断是否单数行
+		size_t index = -1;
+ 		if (mod)
 		{
-			for (size_t j = 0; j <= parts; j++)
+			//奇数行
+			for (int j = count - 1; j >= 0; j--)
 			{
-				size_t index = -1;
-				if (j == parts)
+				index = j*m_numParts + i; //第一行
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << "   ";
+				index = j*m_numParts + i + 1;		//第二行	
+				if (i == m_numParts - 1)
 				{
-					index = i*parts;
-					m_pVertexArray->push_back(points->at(index));
-					index = (i + 1) * parts;
-					m_pVertexArray->push_back(points->at(index));
-					m_pVertexArray->push_back(points->at(index));
-					continue;
+					index = j*m_numParts;
 				}
-				index = i*parts + j;
-				m_pVertexArray->push_back(points->at(index));
-				index = (i + 1) * parts + j;
-				m_pVertexArray->push_back(points->at(index));
-			}
-		}
-		else if (i == cout - 1)
-		{
-			for (size_t j = 0; j <= parts; j++)
-			{
-				size_t index = -1;
-				if (j == parts)
-				{
-					index = (i - 1) * parts;
-					m_pVertexArray->push_back(points->at(index));
-					index = i*parts;
-					m_pVertexArray->push_back(points->at(index));
-					continue;
-				}
-				index = (i - 1) * parts + j;
-				m_pVertexArray->push_back(points->at(index));
-				index = i*parts + j;
-				m_pVertexArray->push_back(points->at(index));
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << std::endl;
 			}
 		}
 		else
 		{
-			for (size_t j = 0; j <= parts; j++)
+			//偶数行
+			for (size_t j = 0; j < count; j++)
 			{
-				size_t index = -1;
-				if (j == parts)
+				index = j*m_numParts + i; //第一行
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << "   ";
+
+				index = j*m_numParts + i + 1;//第二行	
+				if (i == m_numParts - 1)
 				{
-					index = i*parts;
-					m_pVertexArray->push_back(points->at(index));
-					index = (i + 1) * parts;
-					m_pVertexArray->push_back(points->at(index));
-					continue;
+					index = j*m_numParts;
 				}
-				index = i*parts + j;
-				m_pVertexArray->push_back(points->at(index));
-				m_pVertexArray->push_back(points->at(index));
-				index = (i + 1) * parts + j;
-				m_pVertexArray->push_back(points->at(index));
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << std::endl;
 			}
 		}
-
 	}
+}
 
-	m_pTextureArray = MEMath::calcPipeTexCoord(m_pSouceArray, parts);
- }
+void GeometryPipe::clacIndexA(int count)
+{
+	//外层循环控制拐点的遍历
+	for (size_t i = 0; i < count; i++)
+	{
+		bool mod = i % 2; //判断是否单数行
+		size_t index = -1;
+		if (mod)
+		{
+			//奇数行
+			for (int j = count - 1; j >= 0; j--)
+			{
+				index = j*m_numParts + i; //第一行
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << "   ";
+				index = j*m_numParts + i + 1;		//第二行	
+				if (i == m_numParts - 1)
+				{
+					index = j*m_numParts;
+				}
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << std::endl;
+			}
+		}
+		else
+		{
+			//偶数行
+			for (size_t j = 0; j < count; j++)
+			{
+				index = j*m_numParts + i; //第一行
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << "   ";
+
+				index = j*m_numParts + i + 1;//第二行	
+				if (i == m_numParts - 1)
+				{
+					index = j*m_numParts;
+				}
+				m_pVertexArray->push_back(m_pSouceArray->at(index));
+				std::cout << index << std::endl;
+			}
+		}
+	}
+}

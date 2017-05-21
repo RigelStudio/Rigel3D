@@ -342,36 +342,67 @@ osg::Vec2Array* MEMath::calcPipeTexCoord(osg::Vec3Array* source, size_t parts)
 	{
 		return texCoords;
 	}
-	float _fLength = MEMath::getLength(source);
-	float theLength = 0.0;
-	for (size_t i = 0; i < count; i++)
+	float deltaV = 1.0 / parts;
+
+	//外层循环控制拐点的遍历
+	for (size_t i = 0; i < parts; i++)
 	{
-		if (i == 0)
+		bool mod = i % 2; //判断是否单数行
+		size_t index = -1;
+		if (mod)
 		{
-			for (int j = 0; j <= parts; j++)
+			//奇数行
+			for (int j = count - 1; j >= 0; j--)
 			{
-				texCoords->push_back(osg::Vec2(0, j/parts));
-			}
-		}
-		else if (i == count - 1)
-		{
-			for (int j = 0; j <= parts; j++)
-			{
-				texCoords->push_back(osg::Vec2(_fLength / 10, j / parts));
+				if (j == 0)
+				{
+					index = i;
+					texCoords->push_back(osg::Vec2(0, index * deltaV));
+					index = i + 1;
+					texCoords->push_back(osg::Vec2(0, index * deltaV));
+				}
+				else if (j == count - 1)
+				{
+					index = i;
+					texCoords->push_back(osg::Vec2(1, index * deltaV));
+					index = i + 1;
+					texCoords->push_back(osg::Vec2(1, index * deltaV));
+				}
+				else
+				{
+					texCoords->push_back(osg::Vec2(0, i * deltaV));
+					texCoords->push_back(osg::Vec2(1, i * deltaV));
+				}
 			}
 		}
 		else
 		{
-
-			Segment seg(source->at(i - 1), source->at(i));
-			float _length = seg.length();
-			theLength += _length;
-			for (int j = 0; j <= parts; j++)
+			//偶数行
+			for (size_t j = 0; j < count; j++)
 			{
-				texCoords->push_back(osg::Vec2(theLength / 10, j / parts));
+				if (j == 0)
+				{
+					index = i;
+					texCoords->push_back(osg::Vec2(0, index * deltaV));
+					index = i + 1;
+					texCoords->push_back(osg::Vec2(0, index * deltaV));
+				}
+				else if ( j == count - 1)
+				{
+					index = i;
+					texCoords->push_back(osg::Vec2(1, index * deltaV));
+					index = i + 1;
+					texCoords->push_back(osg::Vec2(1, index * deltaV));
+				}
+				else
+				{
+					texCoords->push_back(osg::Vec2(0, i * deltaV));
+					texCoords->push_back(osg::Vec2(1, i * deltaV));
+				}
 			}
 		}
 	}
+	
 	return texCoords;
 }
 
@@ -426,7 +457,8 @@ osg::Vec3Array* MEMath::BezierCurve(osg::Vec3Array* vertexs, float radius, size_
 	auto countP = vertexs->size();
 	if (countP < 3)
 	{
-		resultCurve = vertexs;
+		auto iter = resultCurve->end();
+		resultCurve->insert(iter, vertexs->begin(), vertexs->end());
 		return resultCurve;
 	}
 	

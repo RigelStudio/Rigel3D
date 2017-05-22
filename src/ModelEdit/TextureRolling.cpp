@@ -43,7 +43,7 @@ void TextureRolling::createStrip()
 
 		auto pipe = new GeometryPipe(_array);
 		pipe->setColor(osg::Vec4(0.2, 0.2, 0.2, 1.0));
-		pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+		pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/color_strip.png")));
 		addChild(pipe);
 	}
 	//addChild(m_pStrip);

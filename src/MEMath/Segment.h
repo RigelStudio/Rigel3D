@@ -5,6 +5,7 @@
 class Segment
 {
 public:
+	Segment();
 	Segment(osg::Vec3 start, osg::Vec3 end);
 	~Segment();
 
@@ -15,6 +16,10 @@ public:
 	osg::Vec3 vector();
 
 	float length();
+
+	void setStart(const osg::Vec3& start);
+
+	void setEnd(const osg::Vec3& end);
 
 private:
 	osg::Vec3 m_startPos;

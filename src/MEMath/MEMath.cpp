@@ -345,60 +345,84 @@ osg::Vec2Array* MEMath::calcPipeTexCoord(osg::Vec3Array* source, size_t parts)
 	float deltaV = 1.0 / parts;
 
 	//外层循环控制拐点的遍历
-	for (size_t i = 0; i < parts; i++)
+	osg::Vec2 uvCoord;
+	float _length = 0.0;
+	float S = MEMath::getLength(source);
+	for (size_t v = 0; v < parts; v++)
 	{
-		bool mod = i % 2; //判断是否单数行
 		size_t index = -1;
+		bool mod = v % 2; //判断是否单数行
 		if (mod)
 		{
 			//奇数行
-			for (int j = count - 1; j >= 0; j--)
+			for (int u = count - 1; u > 0; u--)
 			{
-				if (j == 0)
-				{
-					index = i;
-					texCoords->push_back(osg::Vec2(0, index * deltaV));
-					index = i + 1;
-					texCoords->push_back(osg::Vec2(0, index * deltaV));
+				if (v == 0)
+				{//第一个点的时候u = 0
+					index = v;
+					uvCoord = osg::Vec2(0, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(0, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
-				else if (j == count - 1)
-				{
-					index = i;
-					texCoords->push_back(osg::Vec2(1, index * deltaV));
-					index = i + 1;
-					texCoords->push_back(osg::Vec2(1, index * deltaV));
+				else if (v == count - 1)
+				{//最后一个点的时候u = 总长度
+					index = v;
+					uvCoord = osg::Vec2(S, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(S, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
 				else
 				{
-					texCoords->push_back(osg::Vec2(0, i * deltaV));
-					texCoords->push_back(osg::Vec2(1, i * deltaV));
+					Segment segment = Segment(source->at(v + 1), source->at(v));
+					index = v;
+					uvCoord = osg::Vec2(1, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(1, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
+				
 			}
 		}
 		else
 		{
 			//偶数行
-			for (size_t j = 0; j < count; j++)
+			for (size_t u = 1; u < count; u++)
 			{
-				if (j == 0)
-				{
-					index = i;
-					texCoords->push_back(osg::Vec2(0, index * deltaV));
-					index = i + 1;
-					texCoords->push_back(osg::Vec2(0, index * deltaV));
+				if (v == 0)
+				{//第一个点的时候u = 0
+					index = v;
+					uvCoord = osg::Vec2(0, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(0, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
-				else if ( j == count - 1)
-				{
-					index = i;
-					texCoords->push_back(osg::Vec2(1, index * deltaV));
-					index = i + 1;
-					texCoords->push_back(osg::Vec2(1, index * deltaV));
+				else if (v == count - 1)
+				{//最后一个点的时候u = 总长度
+					index = v;
+					uvCoord = osg::Vec2(S, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(S, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
 				else
 				{
-					texCoords->push_back(osg::Vec2(0, i * deltaV));
-					texCoords->push_back(osg::Vec2(1, i * deltaV));
+					Segment segment = Segment(source->at(v + 1), source->at(v));
+					_length += segment.length() / 10;
+					index = v;
+					uvCoord = osg::Vec2(_length, index * deltaV);
+					texCoords->push_back(uvCoord);
+					index = v + 1;
+					uvCoord = osg::Vec2(_length, index * deltaV);
+					texCoords->push_back(uvCoord);
 				}
+				
 			}
 		}
 	}

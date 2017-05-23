@@ -24,7 +24,6 @@ private:
 	//根据曲线计算顶点索引
 	void clacIndex(int count);
 
-	void clacIndexA(int count);
 private:
 	int  m_numParts; //圆周插值分段数
 	osg::ref_ptr<osg::UIntArray> m_pIndexs;

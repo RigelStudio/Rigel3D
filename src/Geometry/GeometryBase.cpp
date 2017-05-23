@@ -110,9 +110,9 @@ void GeometryBase::setTexture(std::string path)
 	texture->setImage(image);
 	texture->setInternalFormat(GL_RGBA);
 	texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
-	texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
+	//texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
 	texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::REPEAT);
-	texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::REPEAT);
+	//texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::REPEAT);
 	getOrCreateStateSet()->setTextureAttributeAndModes(0, texture.get(), osg::StateAttribute::ON);
 	getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE);
 }

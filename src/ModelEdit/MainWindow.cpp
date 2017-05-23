@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <osgDB/ReadFile>
 #include <QMenuBar>
-#include "Core.h"
+#include "MECore/Core.h"
 #include "TextureRolling.h"
 #include <osgDB/ReadFile>
 #include "MECore/FileUtils.h"

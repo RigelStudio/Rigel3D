@@ -21,6 +21,7 @@ set(headers
 			EventAdapter.h
 			Core.h
 			OECore.h
+			SigSlot.h
 			)
 
 set(sources InputLib.cpp
@@ -30,6 +31,7 @@ set(sources InputLib.cpp
 			EventAdapter.cpp
 			Core.cpp
 			OECore.cpp
+			SigSlot.cpp
 			)
 
 # Qt warp files

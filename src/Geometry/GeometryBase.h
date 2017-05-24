@@ -33,6 +33,8 @@ public:
 
 	virtual void setTexture(std::string path);
 
+	virtual void addTexture(int index, std::string path);
+
 protected:
 
 	void init();

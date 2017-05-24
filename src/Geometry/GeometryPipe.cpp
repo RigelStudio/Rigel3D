@@ -30,7 +30,7 @@ void GeometryPipe::updateStyle()
 	setColorBinding(Geometry::BIND_OVERALL);
 	m_pStateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF |
 		osg::StateAttribute::OVERRIDE);
-	m_pStateSet->setMode(GL_BLEND, osg::StateAttribute::OFF |
+	m_pStateSet->setMode(GL_BLEND, osg::StateAttribute::ON |
 		osg::StateAttribute::OVERRIDE);
 	osg::PolygonOffset *offset = new osg::PolygonOffset;
 	offset->setFactor(1.0);
@@ -53,7 +53,7 @@ void GeometryPipe::updateGeomtry()
 void GeometryPipe::createPipe()
 {
 	auto curve = new osg::Vec3Array;
-	curve = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 6);
+	curve = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 1);
 	auto count = curve->size();
 	interpolationCicle(curve);
 	clacIndex(count);
@@ -82,7 +82,7 @@ void GeometryPipe::interpolationCicle(const osg::Vec3Array* curve)
 		{
 			lastDir = curve->at(i) - curve->at(i - 1);
 			nextDir = curve->at(i + 1) - curve->at(i);
-			dir = lastDir + nextDir;
+			dir = nextDir + lastDir;
 		}
 		dir.normalize();
 		circle = MEMath::createCircle(curve->at(i), 1, dir, m_numParts);

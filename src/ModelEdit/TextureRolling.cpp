@@ -28,13 +28,19 @@ void TextureRolling::createStrip()
 	{
 		auto _array = new osg::Vec3Array;
  		_array->push_back(osg::Vec3(0, 0, 0) );
- 		_array->push_back(osg::Vec3(0, 0, 50));
+ 		_array->push_back(osg::Vec3(50, 0, 0));
   		_array->push_back(osg::Vec3(50, 0, 50));
-  		_array->push_back(osg::Vec3(50, 50, 50));
-   		_array->push_back(osg::Vec3(50, 50, 0));
-   		_array->push_back(osg::Vec3(50, 10, 0));
-  		_array->push_back(osg::Vec3(20, 15, 30));
-  		_array->push_back(osg::Vec3(35, 30, 30));
+		_array->push_back(osg::Vec3(50, 0, 0));
+//   		_array->push_back(osg::Vec3(50, 50, 50));
+//    		_array->push_back(osg::Vec3(50, 50, 0));
+//    		_array->push_back(osg::Vec3(50, 10, 0));
+//   		_array->push_back(osg::Vec3(20, 15, 30));
+//   		_array->push_back(osg::Vec3(35, 30, 30));
+// 		_array->push_back(osg::Vec3(35, 30, 30));
+// 		_array->push_back(osg::Vec3(35, 30, 30));
+// 		_array->push_back(osg::Vec3(50, 10, 0));
+// 		_array->push_back(osg::Vec3(50, 50, 50));
+// 		_array->push_back(osg::Vec3(50, 50, 0));
 
  		//m_pStrip = new GeometryStrip(_array);
  		//m_pStrip->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
@@ -42,7 +48,9 @@ void TextureRolling::createStrip()
  		//mtNode->setMatrix(osg::Matrix::rotate(osg::PI_2, osg::X_AXIS));
 
 		auto pipe = new GeometryPipe(_array);
-		pipe->setTexture(FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+		pipe->setColor(osg::Vec4(1, 0, 0, 1));
+		pipe->addTexture(0, FileUtils::ins()->getPath(std::string("Data/Images/arraw_strip.png")));
+		//pipe->addTexture(1, FileUtils::ins()->getPath(std::string("Data/Images/water.png")));
 		addChild(pipe);
 	}
 	//addChild(m_pStrip);
@@ -64,6 +72,7 @@ void TextureRolling::createShader()
 	profram->addShader(fragShader);
 
 	m_pStateSet->addUniform(new osg::Uniform("sampler", 0));
+	m_pStateSet->addUniform(new osg::Uniform("sampler", 1));
 
 	m_pStateSet->setAttributeAndModes(profram);
 }

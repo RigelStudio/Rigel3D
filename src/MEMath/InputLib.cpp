@@ -12,9 +12,11 @@
 
 #ifdef _DEBUG
 #pragma comment(lib,"osgd.lib")
+#pragma comment(lib,"OpenThreadsd.lib")
 
 #else
 #pragma comment(lib,"osg.lib")
+#pragma comment(lib,"OpenThreads.lib")
 
 #endif
 

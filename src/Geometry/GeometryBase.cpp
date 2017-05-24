@@ -77,7 +77,7 @@ void GeometryBase::init()
 	m_pStateSet = getOrCreateStateSet();
 	m_pSouceArray = new osg::Vec3Array;
 	setVertexArray(m_pVertexArray);
-	setColorArray(m_pColorArray);
+	setColorArray(m_pColorArray, osg::Array::BIND_OVERALL);
 	setNormalArray(m_pNormalArray, osg::Array::BIND_OVERALL);
 	setTexCoordArray(0, m_pTextureArray, osg::Array::BIND_PER_VERTEX);
 	setUseVertexBufferObjects(true);
@@ -126,4 +126,17 @@ void GeometryBase::setVertexs(osg::Vec3Array* array)
 osg::Vec3Array* GeometryBase::getSouceArray()
 {
 	return m_pSouceArray;
+}
+
+void GeometryBase::addTexture(int index, std::string path)
+{
+	osg::ref_ptr<osg::Image> image = osgDB::readImageFile(path);
+	osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
+	texture->setImage(image);
+	texture->setInternalFormat(GL_RGBA);
+	texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
+	texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::REPEAT);
+	getOrCreateStateSet()->setTextureAttributeAndModes(index, texture.get(), osg::StateAttribute::ON);
+	getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE);
+	texture.release();
 }

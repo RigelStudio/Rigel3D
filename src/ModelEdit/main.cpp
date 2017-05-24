@@ -2,7 +2,7 @@
 #include <iostream>
 #include <QApplication>
 #include <QTime>
-#include "Core.h"
+#include "MECore/Core.h"
 #include "MECore/FileUtils.h"
 
 int main(int argc, char *argv[])

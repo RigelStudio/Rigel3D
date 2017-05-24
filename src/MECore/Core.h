@@ -7,13 +7,14 @@
 // Description:  
 // History:
 *************************************************/
-#ifndef MODELEDIT_CORE_H
-#define MODELEDIT_CORE_H
+#ifndef CORE_H
+#define CORE_H
+#include "Export.h"
+#include "GraphicsView.h"
 #include <QGraphicsScene>
 #include <osg/Group>
-#include "MECore/GraphicsView.h"
 
-class Core
+class MECORE_EXPORT Core
 {
 public:
 	static Core* ins();

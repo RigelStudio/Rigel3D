@@ -351,7 +351,7 @@ osg::Vec2Array* MEMath::calcPipeTexCoord(osg::Vec3Array* source, size_t parts)
 	for (size_t v = 0; v <= parts; v++)
 	{
 		size_t index = v; 
-		bool mod = v % 2; //判断是否单数行
+		int mod = v % 2; //判断是否单数行
 		if (mod)
 		{
 			_length = S;

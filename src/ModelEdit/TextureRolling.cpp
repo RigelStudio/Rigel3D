@@ -1,6 +1,6 @@
 #include "TextureRolling.h"
 #include "MECore/FileUtils.h"
-#include "Core.h"
+#include "MECore/Core.h"
 #include <osg/Program>
 #include <osgDB/ReadFile>
 #include "Geometry/GeometryLine.h"

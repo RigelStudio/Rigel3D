@@ -53,7 +53,7 @@ void GeometryPipe::updateGeomtry()
 void GeometryPipe::createPipe()
 {
 	auto curve = new osg::Vec3Array;
-	curve = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 5, 1);
+	curve = MEMath::BezierCurve(m_pSouceArray, m_numWidth * 30, 8);
 	auto count = curve->size();
 	interpolationCicle(curve);
 	clacIndex(count);

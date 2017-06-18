@@ -32,12 +32,14 @@ void OECore::init(GraphicsView* osgView)
 		osg::Node* earth = osgDB::readNodeFile(FileUtils::ins()->getPath(std::string("Data/BlueStar.earth")));
 		m_pMapNode = osgEarth::MapNode::findMapNode(earth);
 		m_pEarthManip = new osgEarth::Util::EarthManipulator;
+		m_pEarthManip->setDistance(5.0);
 		m_pViewer->setCameraManipulator(m_pEarthManip);
 		if (m_pMapNode != nullptr)
 		{
 			m_pMap = m_pMapNode->getMap();
 			m_pSkyNode = osgEarth::Util::SkyNode::create(m_pMapNode);
 			m_pSkyNode->addChild(m_pMapNode);
+			m_pSkyNode->attach(m_pViewer);
 			m_pSceneData->addChild(m_pSkyNode);
 		}
 	}

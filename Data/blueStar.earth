@@ -1,6 +1,6 @@
 
 <map version="2.8">
-  <image name="readymap_imagery" driver="tms">
-    <url>http://readymap.org/readymap/tiles/1.0.0/7/</url>
+  <image name="world" driver="gdal">
+    <url>Images/world.tif</url>
   </image>
 </map>

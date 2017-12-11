@@ -17,9 +17,9 @@
 #pragma comment(lib,"osgTextd.lib")
 #pragma comment(lib,"osgUtild.lib")
 #pragma comment(lib,"osgViewerd.lib")
-#pragma comment(lib,"Geometryd.lib")
-#pragma comment(lib,"GUIToold.lib")
-#pragma comment(lib,"MECored.lib")
+#pragma comment(lib,"RigelModeld.lib")
+#pragma comment(lib,"RigelQtd.lib")
+#pragma comment(lib,"RigelCored.lib")
 
 #else
 #pragma comment(lib,"OpenThreads.lib")
@@ -30,9 +30,9 @@
 #pragma comment(lib,"osgUtil.lib")
 #pragma comment(lib,"osgViewer.lib")
 
-#pragma comment(lib,"GUITool.lib")
-#pragma comment(lib,"Geometry.lib")
-#pragma comment(lib,"MECore.lib")
+#pragma comment(lib,"RigelModel.lib")
+#pragma comment(lib,"RigelQt.lib")
+#pragma comment(lib,"RigelCore.lib")
 
 #endif
 

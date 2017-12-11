@@ -1,11 +1,13 @@
 #include "TextureRolling.h"
-#include "MECore/FileUtils.h"
-#include "MECore/Core.h"
+
 #include <osg/Program>
 #include <osgDB/ReadFile>
-#include "Geometry/GeometryLine.h"
 #include <osg/MatrixTransform>
-#include "Geometry/GeometryPipe.h"
+
+#include "RigelCore/FileUtils.h"
+#include "RigelCore/Core.h"
+#include "RigelModel/GeometryLine.h"
+#include "RigelModel/GeometryPipe.h"
 
 TextureRolling::TextureRolling()
 {

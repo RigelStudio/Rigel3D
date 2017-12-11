@@ -1,6 +1,6 @@
 #ifndef TEXTUREROLLING_H
 #define TEXTUREROLLING_H
-#include <Geometry/GeometryStrip.h>
+#include <RigelModel/GeometryStrip.h>
 #include <osg/StateSet>
 
 class TextureRolling : public osg::Group

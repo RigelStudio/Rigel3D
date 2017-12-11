@@ -12,10 +12,9 @@
 #add_subdirectory(Application)
 
 
-add_subdirectory(MEMath)
-add_subdirectory(Geometry)
-add_subdirectory(MECore)
-add_subdirectory(GUITool)
-add_subdirectory(MEPlotting)
+add_subdirectory(RigelMath)
+add_subdirectory(RigelCore)
+add_subdirectory(RigelQt)
+add_subdirectory(RigelModel)
+add_subdirectory(RigelMessage)
 add_subdirectory(ModelEdit)
-add_subdirectory(BlueStar)

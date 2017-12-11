@@ -1,11 +1,11 @@
 #include "MainWindow.h"
 #include <osgDB/ReadFile>
 #include <QMenuBar>
-#include "MECore/Core.h"
+#include "RigelCore/Core.h"
 #include "TextureRolling.h"
 #include <osgDB/ReadFile>
-#include "MECore/FileUtils.h"
-#include "MECore/GraphicsView.h"
+#include "RigelCore/FileUtils.h"
+#include "RigelCore/GraphicsView.h"
 #include <osg/DisplaySettings>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/StateSetManipulator>

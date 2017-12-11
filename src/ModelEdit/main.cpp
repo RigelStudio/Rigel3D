@@ -2,8 +2,8 @@
 #include <iostream>
 #include <QApplication>
 #include <QTime>
-#include "MECore/Core.h"
-#include "MECore/FileUtils.h"
+#include "RigelCore/Core.h"
+#include "RigelCore/FileUtils.h"
 
 int main(int argc, char *argv[])
 {

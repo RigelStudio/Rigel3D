@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 # 设置解决方案名称
-project(MEEngine)
+project(Rigel3D)
 
 # 配置需要的第三方库
 set(ThirdParty_DIR "" CACHE PATH "third party directory")

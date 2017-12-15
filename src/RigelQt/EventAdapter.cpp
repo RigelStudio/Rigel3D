@@ -116,7 +116,7 @@ void EventAdapter::keyPressEvent(QKeyEvent* event)
 	{
 		setKeyboardModifiers(event);
 		m_pGraphicsWindow->getEventQueue()->keyPress(
-			(osgGA::GUIEventAdapter::KeySymbol)*(event->text().toLatin1().data()));
+			(osgGA::GUIEventAdapter::KeySymbol)*(event->text().toStdString().data()));
 	}
 
 	QGraphicsView::keyPressEvent(event);
@@ -126,7 +126,7 @@ void EventAdapter::keyReleaseEvent(QKeyEvent* event)
 {
 	setKeyboardModifiers(event);
 	m_pGraphicsWindow->getEventQueue()->keyRelease(
-		(osgGA::GUIEventAdapter::KeySymbol)*(event->text().toLatin1().data()));
+		(osgGA::GUIEventAdapter::KeySymbol)*(event->text().toStdString().data()));
 
 	QGraphicsView::keyReleaseEvent(event);
 }

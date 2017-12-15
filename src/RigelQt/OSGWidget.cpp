@@ -4,7 +4,7 @@
 #include <osgGA/TrackballManipulator>
 
 OSGWidget::OSGWidget(QWidget* parent)
-	:QGLWidget(parent)
+	:QOpenGLWidget(parent)
 {
 	m_pViewer = NULL;
 	m_pGraphicsWindow = NULL;

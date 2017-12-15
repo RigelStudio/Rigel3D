@@ -11,7 +11,7 @@
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
-#include <QString>
+#include <string>
 #include "Export.h"
 
 /* 本类的功能：根据相对路径获取文件的绝对路径
@@ -40,16 +40,15 @@ public:
 	* @see   getPath()
 	* @note  初始化根目录
 	*/
-	void init(const QString& name);
+	void init(const std::string& name);
 
 	/*
 	* @param name:文件名称或者相对路径
 	* @return 文件的绝对路径
 	* @see   init()
 	* @note  根据给定的文件名称，或者绝对文件路径
-	* QString strImagePath = FileUtils::ins()->getPath("image.png");
+	* std::string strImagePath = FileUtils::ins()->getPath("image.png");
 	*/
-	QString getPath(const QString& name);
 
 	std::string getPath(const std::string& name);
 
@@ -59,7 +58,7 @@ private:
 
 private:
 	static FileUtils* m_pIns;
-	QString m_strRoot;
+	std::string m_strRoot;
 };
 
 #endif // FILEUTILS_H

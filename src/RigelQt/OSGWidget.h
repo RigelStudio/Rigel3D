@@ -13,10 +13,10 @@
 #include "Export.h"
 #include <QEvent>
 #include <QTimer>
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <osgViewer/Viewer>
 
-class DLL_EXPORT OSGWidget : public QGLWidget
+class DLL_EXPORT OSGWidget : public QOpenGLWidget
 {
 public:
 	OSGWidget(QWidget* parent = nullptr);

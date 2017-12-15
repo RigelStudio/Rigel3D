@@ -1,7 +1,7 @@
 #include "graphicsview.h"
 #include <QGraphicsScene>
 #include <QPaintEngine>
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/TrackballManipulator>
 
@@ -17,7 +17,7 @@ GraphicsView::~GraphicsView()
 
 void GraphicsView::init()
 {
-	QGLWidget* glViewPort = new QGLWidget;
+	QOpenGLWidget* glViewPort = new QOpenGLWidget;
 	glViewPort->setMouseTracking(true);
 	glViewPort->setMaximumSize(2000, 2000);
 	this->setViewport(glViewPort);

@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 # 设置解决方案名称
-project(Rigel3D)
+project(RigelGL)
 
 # 配置需要的第三方库
 set(ThirdParty_DIR "" CACHE PATH "third party directory")
@@ -19,11 +19,11 @@ else(${CMAKE_SIZEOF_VOID_P} MATCHES 8)
 	SET(Platform "win32")
 endif(${CMAKE_SIZEOF_VOID_P} MATCHES 8)
 
-# 设置输出路径，区分32、64
-set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin_${Platform})
+# 设置输出路径
+set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin)
 
-# 设置lib库的输出路径，区分32、64
-set(OUTPUT_LIBDIR ${CMAKE_SOURCE_DIR}/lib_${Platform})
+# 设置lib库的输出路径
+set(OUTPUT_LIBDIR ${CMAKE_SOURCE_DIR}/lib)
 
 # 对每一个平台，设置其输出路径
 foreach(CONF ${CMAKE_CONFIGURATION_TYPES})

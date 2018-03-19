@@ -7,8 +7,6 @@
 // Description:  “¿¿µø‚
 // History:
 *************************************************/
-#ifndef OSGGRAPHICS_INPUTLIB_H
-#define OSGGRAPHICS_INPUTLIB_H
 
 #ifdef _DEBUG
 //#pragma comment(lib,"OpenThreadsd.lib")
@@ -16,7 +14,6 @@
 #pragma comment(lib,"osgDBd.lib")
 #pragma comment(lib,"osgGAd.lib")
 #pragma comment(lib,"osgViewerd.lib")
-
 #pragma comment(lib,"RigelQtd.lib")
 #pragma comment(lib,"RigelCored.lib")
 
@@ -28,8 +25,6 @@
 #pragma comment(lib,"osgViewer.lib")
 
 #pragma comment(lib,"RigelQt.lib")
-#pragma comment(lib,"RigelCore.lib")
+#pragma comment(lib,"RigelCore.lib"
 
 #endif
-
-#endif // OSGGRAPHICS_INPUTLIB_H

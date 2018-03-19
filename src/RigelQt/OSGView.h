@@ -1,4 +1,5 @@
 #pragma once
+#include "Export.h"
 #include <QQuickFramebufferObject>
 #include <osg/Group>
 #include <osg/Camera>
@@ -10,7 +11,7 @@
 
 class OSGRender;
 
-class OSGView : public QQuickFramebufferObject
+class DLL_EXPORT OSGView : public QQuickFramebufferObject
 {
 	Q_OBJECT
 public:

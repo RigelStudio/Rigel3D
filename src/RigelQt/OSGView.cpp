@@ -6,7 +6,7 @@
 #include <osgGA/TrackballManipulator>
 #include <QQmlApplicationEngine>
 
-class OSGRender : public QQuickFramebufferObject::Renderer
+class DLL_EXPORT OSGRender : public QQuickFramebufferObject::Renderer
 {
 public:
 	OSGRender::OSGRender(const OSGView* view)
@@ -28,9 +28,9 @@ public:
 	{
 		QOpenGLContext::currentContext()->functions()->glUseProgram(0);
 		osgGA::EventQueue::Events events;
-		m_pOSGView->m_pEventQueue->takeEvents(events);
 		if (events.size() > 0)
 		{
+			m_pOSGView->m_pEventQueue->takeEvents(events);
 			m_pOSGView->m_pViewer->getEventQueue()->appendEvents(events);
 		}
 		m_pOSGView->m_pViewer->frame();
@@ -52,7 +52,7 @@ OSGView::OSGView(QQuickItem *parent/* = Q_NULLPTR*/)
 	setFlag(ItemHasContents, true);
 	setAcceptedMouseButtons(Qt::AllButtons);
 	initOSG();
-	qmlRegisterType<OSGView>("OSGQuick.OSGView", 1, 0, "OSGView");
+	//qmlRegisterType<OSGView>("OSGQuick.OSGView", 1, 0, "OSGView");
 }
 
 

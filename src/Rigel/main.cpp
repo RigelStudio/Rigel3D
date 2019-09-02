@@ -1,5 +1,5 @@
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "qqmlapplicationengine.h"
 #include "RigelQt/OSGView.h"
 #include "RigelCore/FileUtils.h"
 

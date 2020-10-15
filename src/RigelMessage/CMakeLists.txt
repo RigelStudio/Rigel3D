@@ -13,7 +13,6 @@ set(sources
 InputLib.cpp
 )
 
-
 # add definitions,unicode and export
 add_definitions(-DUNICODE -D_UNICODE -D${TargetNameUP}_EXPORTS)
 

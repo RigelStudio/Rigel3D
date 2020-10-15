@@ -1,4 +1,5 @@
 # Set porject name
+
 set(TargetName RigelModel)
 string(TOUPPER ${TargetName} TargetNameUP)
 

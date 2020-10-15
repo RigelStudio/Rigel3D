@@ -64,6 +64,7 @@ add_dependencies(${TargetName}  RigelCore)
 set_target_properties(${TargetName} PROPERTIES DEBUG_OUTPUT_NAME "${TargetName}${CMAKE_DEBUG_POSTFIX}")
 set_target_properties(${TargetName} PROPERTIES RELEASE_OUTPUT_NAME "${TargetName}${CMAKE_RELEASE_POSTFIX}")
 
+
 # Use the Qt5 modules
 target_link_libraries(${TargetName} Qt5::Core Qt5::Gui Qt5::Widgets
 	Qt5::OpenGL)

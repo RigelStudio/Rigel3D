@@ -3,4 +3,4 @@
 
 
 ##管线效果图
-![image](https://github.com/RigelStudio/Rigel3D/Data/Images/IMG_2400.GIF)
+![image]([https://github.com/RigelStudio/Rigel3D/blob/master/Data/Images/IMG_2400.GIF])
